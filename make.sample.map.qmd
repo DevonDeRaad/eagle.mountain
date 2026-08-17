@@ -1,0 +1,252 @@
+---
+title: "scrubjay.mapping"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Setup
+```{r, results=FALSE}
+library(dplyr)
+library(ebirdst)
+library(fields)
+library(ggplot2)
+library(lubridate)
+library(rnaturalearth)
+library(sf)
+library(terra)
+library(tidyr)
+library(tidyterra)
+library(RColorBrewer)
+#extract <- terra::extract
+#devtools::install_github("ropensci/rnaturalearthhires")
+```
+
+### Download data
+```{r}
+#set_ebirdst_access_key("d3q8inorcsog", overwrite = TRUE)
+#download the data
+#path <- ebirdst_download_status("Woodhouse's Scrub-jay", download_ranges = T)
+#path <- ebirdst_download_status("California Scrub-jay", download_ranges = T)
+#above only needs to be run once
+#if the data package has already been downloaded just do this:
+path <- get_species_path("California Scrub-jay")
+path <- get_species_path("Woodhouse's Scrub-jay")
+
+#read in sample sheet with sample sex info
+samps<-read.csv("~/Desktop/2026.eagle.mountain/updated.wgs.sampling.csv")
+#remove the one sample that was duplicated to generate a technical replicate
+samps<-samps[c(1:7,9:24),]
+table(samps$locality)
+```
+
+#pull in seasonal abundance data for California Scrub-jay and check it out
+```{r}
+# load seasonal mean relative abundance
+abd_seasonal <- load_raster("California Scrub-jay", 
+                            product = "abundance", 
+                            period = "seasonal",
+                            metric = "mean",
+                            resolution = "3km")
+#extract just the breeding season relative abundance
+abd_breeding <- abd_seasonal
+plot(abd_breeding, axes = FALSE)
+# boundaries of states in the united states
+region_boundary1 <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+  transmute(state = iso_3166_2)
+
+region_boundary <- ne_countries(continent = "North America")
+#plot(region_boundary)
+
+region_boundary_proj <- st_transform(region_boundary, st_crs(abd_breeding))
+# crop and mask to boundary
+abd_breeding_mask <- crop(abd_breeding, region_boundary_proj) |> mask(region_boundary_proj)
+# map the cropped data
+plot(abd_breeding_mask, axes = FALSE)
+# find the centroid of the region
+region_centroid <- region_boundary |> 
+  st_geometry() |> 
+  st_transform(crs = 4326) |> 
+  st_centroid() |> 
+  st_coordinates() |> 
+  round(1)
+
+# define projection centered on Kansas
+crs_laea <- paste0("+proj=laea +lat_0=", "38.5", " +lon_0=", "-98.4")
+
+# transform to the custom projection using nearest neighbor resampling
+abd_breeding_laea <- project(abd_breeding_mask, crs_laea) |> trim()
+
+# map the cropped and projected data
+plot(abd_breeding_laea, axes = FALSE, breakby = "cases")
+```
+#repeat for WOSJ and check it out
+```{r}
+# load seasonal mean relative abundance at low res
+BHabd_seasonal <- load_raster("Woodhouse's Scrub-jay", 
+                            product = "abundance", 
+                            period = "seasonal",
+                            metric = "mean",
+                            resolution = "3km")
+#extract just the breeding season relative abundance
+BHabd_breeding <- BHabd_seasonal
+plot(BHabd_breeding, axes = FALSE)
+# boundaries of states in the united states
+region_boundary1 <- ne_states(iso_a2 = "US", returnclass = "sf") %>%
+  filter(iso_a2 == "US", !postal %in% c("AK", "HI")) %>%
+  transmute(state = iso_3166_2)
+
+region_boundary <- ne_countries(continent = "North America")
+#plot(region_boundary)
+
+BHregion_boundary_proj <- st_transform(region_boundary, st_crs(BHabd_breeding))
+# crop and mask to boundary
+BHabd_breeding_mask <- crop(BHabd_breeding, BHregion_boundary_proj) |> mask(BHregion_boundary_proj)
+# map the cropped data
+plot(BHabd_breeding_mask, axes = FALSE)
+# find the centroid of the region
+region_centroid <- region_boundary |> 
+  st_geometry() |> 
+  st_transform(crs = 4326) |> 
+  st_centroid() |> 
+  st_coordinates() |> 
+  round(1)
+
+# define projection centered on Kansas
+crs_laea <- paste0("+proj=laea +lat_0=", "38.5", " +lon_0=", "-98.4")
+
+# transform to the custom projection using nearest neighbor resampling
+BHabd_breeding_laea <- project(BHabd_breeding_mask, crs_laea) |> trim()
+
+# map the cropped and projected data
+plot(BHabd_breeding_laea, axes = FALSE, breakby = "cases")
+```
+
+## plot them together
+```{r}
+# transform to the custom projection using nearest neighbor resampling
+BHabd_breeding_laea <- project(BHabd_breeding_mask, crs_laea) |> trim()
+
+#remove 0 cells from BH raster which would overwrite the presence data from the rose-breasted
+y <- classify(BHabd_breeding_laea, cbind(-Inf, 0, NA))
+
+#remove 0 cells from RB raster 
+abd_breeding_laea <- classify(abd_breeding_laea, cbind(-Inf, 0, NA))
+
+# define the map plotting extent with the region boundary polygon
+region_boundary_laea <- region_boundary |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
+# natural earth boundaries
+countries <- ne_countries(returnclass = "sf") |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
+states <- ne_states(iso_a2 = "US") |> 
+  st_geometry() |> 
+  st_transform(crs_laea)
+# quantiles of non-zero values
+v <- values(abd_breeding_laea, na.rm = TRUE, mat = FALSE)
+v <- v[v > 0]
+breaks <- quantile(v, seq(0, 1, by = 0.1))
+# add a bin for 0
+breaks <- c(0, breaks)
+
+#color-code separately
+plot(region_boundary_laea, border = "black")
+#plot(countries, col = "grey90", border = "grey90", add = TRUE)
+# add relative abundance
+plot(abd_breeding_laea,
+     breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Reds'),"#450009"), 
+     maxcell = ncell(abd_breeding_laea),
+     legend = FALSE, add = TRUE)
+plot(y, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Blues'),"#02214f"), maxcell = ncell(abd_breeding_laea),legend = FALSE, add=TRUE)
+
+#color schemes shown below
+# "#e6e6e6" "#F7FBFF" "#DEEBF7" "#C6DBEF" "#9ECAE1" "#6BAED6" "#4292C6" "#2171B5" "#08519C" "#08306B" "#02214f"
+# "#e6e6e6" "#FFF5F0" "#FEE0D2" "#FCBBA1" "#FC9272" "#FB6A4A" "#EF3B2C" "#CB181D" "#A50F15" "#67000D" "#450009"
+
+#project the sampling points
+prove<- vect(samps,geom=c("longitude", "latitude"),crs="+proj=longlat")
+proven <- project(prove, crs_laea)
+
+###save plot
+## 1. Open a pdf file
+#pdf("~/Desktop/2026.eagle.mountain/scrubjay.map.sampling.pdf", width=15, height=20) 
+## 2. Create a plot
+#color-code separately
+plot(region_boundary_laea, border = "white")
+plot(countries, col = "grey90", border = NA, add = TRUE)
+# add relative abundance
+plot(abd_breeding_laea, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Reds'),"#450009"),
+     maxcell = ncell(abd_breeding_laea), legend = FALSE, add = TRUE)
+plot(y, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Blues'),"#02214f"),
+     maxcell = ncell(abd_breeding_laea),legend = FALSE, add=TRUE)
+#plot(states, col = NA, border = "grey50", add = TRUE) #add state outline
+#plot(countries[[4]], border = "grey50", add=TRUE) #add canada outline
+#plot(countries[[28]], border = "grey50", add=TRUE) #add mexico outline
+plot(countries, border = "grey50", add=TRUE) #plot all countries
+#add sampling points
+plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=.75)
+#plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=1)
+
+## 3. Close the pdf file
+#dev.off() 
+
+
+##### make more zoomed in version
+
+###save plot
+## 1. Open a pdf file
+#pdf("~/Desktop/2026.eagle.mountain/zoomed.scrubjay.map.sampling.pdf", width=30, height=40) 
+## 2. Create a plot
+#color-code separately
+plot(region_boundary_laea, border = "white")
+plot(countries, col = "grey90", border = NA, add = TRUE)
+# add relative abundance
+plot(abd_breeding_laea, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Reds'),"#450009"),
+     maxcell = ncell(abd_breeding_laea), legend = FALSE, add = TRUE)
+plot(y, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Blues'),"#02214f"),
+     maxcell = ncell(abd_breeding_laea),legend = FALSE, add=TRUE)
+#plot(states, col = NA, border = "grey50", add = TRUE) #add state outline
+#plot(countries[[4]], border = "grey50", add=TRUE) #add canada outline
+#plot(countries[[28]], border = "grey50", add=TRUE) #add mexico outline
+plot(countries, border = "grey50", add=TRUE) #add all country outlines
+#add sampling points
+plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=0.5)
+#plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=1)
+
+## 3. Close the pdf file
+#dev.off() 
+
+
+### remake plot without sampling points
+## 1. Open a pdf file
+#pdf("~/Desktop/2026.eagle.mountain/scrubjay.map.sampling.nodots.pdf", width=30, height=40) 
+## 2. Create a plot
+#color-code separately
+plot(region_boundary_laea, border = "white")
+plot(countries, col = "grey90", border = NA, add = TRUE)
+# add relative abundance
+plot(abd_breeding_laea, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Reds'),"#450009"),
+     maxcell = ncell(abd_breeding_laea), legend = FALSE, add = TRUE)
+plot(y, breaks = breaks, col = c("#e6e6e6",brewer.pal(9, 'Blues'),"#02214f"),
+     maxcell = ncell(abd_breeding_laea),legend = FALSE, add=TRUE)
+#plot(states, col = NA, border = "grey50", add = TRUE) #add state outline
+#plot(countries[[4]], border = "grey50", add=TRUE) #add canada outline
+#plot(countries[[28]], border = "grey50", add=TRUE) #add mexico outline
+plot(countries, border = "grey50", add=TRUE) #add all country outlines
+#add sampling points
+#plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=0.5)
+#plot(proven, add=TRUE, col="black", bg="white", pch=21, cex=1)
+
+## 3. Close the pdf file
+#dev.off() 
+
+```
+
