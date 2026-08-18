@@ -3,3 +3,4 @@ Detailed code for investigating what percentage of reads mapped and the resultin
 
 Input data used to generate these plots is here: https://github.com/DevonDeRaad/eagle.mountain/blob/main/investigate.refgenome.mapping/sample.cov.details.forplot.csv
 
+Detailed outline of the pipeline used to compare read mappers and reference genomes is here: https://github.com/DevonDeRaad/eagle.mountain/blob/main/investigate.refgenome.mapping/methods.outline.png
