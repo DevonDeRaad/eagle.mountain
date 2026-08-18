@@ -1,0 +1,93 @@
+---
+title: "scrubjay.coverage.investigation"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### read packages and data
+```{r}
+library(patchwork)
+library(ggplot2)
+library(ggbeeswarm)
+sample.cov<-read.csv("~/Desktop/2026.eagle.mountain/sample.cov.details.forplot.csv")
+#convert dataframe into long (tidy) format
+long.sample.cov<-data.frame(samp<-rep(sample.cov$sample.ID,times=4),
+                            sample.type<-rep(sample.cov$sample.type,times=4),
+                            seq.approach<-rep(sample.cov$sequencing.type,times=4),
+                            DOC<-c(sample.cov$bowtie2.CASJ.DOC,sample.cov$bowtie2.FLSJ.DOC,sample.cov$bwa.CASJ.DOC,sample.cov$bwa.FLSJ.DOC),
+                            perc.mapping<-c(sample.cov$bowtie2.CASJ.map.perc,sample.cov$bowtie2.FLSJ.map.perc,sample.cov$bwa.CASJ.map.perc,sample.cov$bwa.FLSJ.map.perc),
+                            mapper<-c(rep("bowtie2", times=48),rep("bwa", times=48)),
+                            ref.genome<-rep(c(rep("CASJ", times=24),rep("FLSJ", times=24)),times=2))
+colnames(long.sample.cov)<-c("samp","sample.type","seq.approach","DOC","perc.mapping","mapper","ref.genome")
+
+#add one more column
+long.sample.cov$ref.plus.mapper<-paste(long.sample.cov$mapper,long.sample.cov$ref.genome, sep = ".")
+```
+
+### make plots
+```{r}
+ggplot(long.sample.cov, aes(x = mapper, y = perc.mapping, color = seq.approach, shape = ref.genome)) +
+  geom_beeswarm(size = 3) + # Use geom_beeswarm, set a common size
+  theme_classic()
+
+ggplot(long.sample.cov, aes(x = ref.plus.mapper, y = perc.mapping, color = sample.type, shape = seq.approach)) +
+  geom_beeswarm(size = 2.5, method = "center") +
+  ylim(c(70,100)) +
+  scale_color_manual(values = c("frozen tissue" = "black", "toepad" = "grey70")) +
+  labs(x = "Reference genome + mapping approach", y = "Percentage of reads mapping",
+       color = "Sample type", shape = "Sequencing approach") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+ggplot(long.sample.cov, aes(x = ref.plus.mapper, y = DOC, color = sample.type, shape = seq.approach)) +
+  geom_beeswarm(size = 2.5, method = "center") +
+  ylim(c(0,30)) +
+  scale_color_manual(values = c("frozen tissue" = "black", "toepad" = "grey70")) +
+  labs(x = "Reference genome + mapping approach", y = "Depth of coverage",
+       color = "Sample type", shape = "Sequencing approach") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+#save plots
+
+```
+
+### Do t-tests
+```{r}
+#compare mapping in samples sequenced 50bp PE between bowtie2 and bwa
+#subset df
+p1<-long.sample.cov[long.sample.cov$seq.approach == "50bp PE" & long.sample.cov$ref.genome == "CASJ",]
+#make boxplot
+p1.plot<-ggplot(p1, aes(x = mapper, y = perc.mapping)) +
+  geom_boxplot()+
+  labs(x = "Read-mapper", y = "Percentage of 50 bp PE reads mapping") +
+  ggtitle("CASJ reference genome") +
+  theme_bw() +
+  annotate("label", x = 1.5, y = 85, label = "p < 0.0001")# Add p-val
+#t test
+t.test(p1$perc.mapping[p1$mapper == "bwa"],p1$perc.mapping[p1$mapper == "bowtie2"])
+
+
+#compare mapping in samples sequenced 50bp PE between bowtie2 and bwa
+#subset df
+p2<-long.sample.cov[long.sample.cov$seq.approach == "50bp PE" & long.sample.cov$ref.genome == "FLSJ",]
+#make boxplot
+p2.plot<-ggplot(p2, aes(x = mapper, y = perc.mapping)) +
+  geom_boxplot()+
+  labs(x = "Read-mapper", y = "Percentage of 50 bp PE reads mapping") +
+  ggtitle("FLSJ reference genome") +
+  theme_bw() +
+  annotate("label", x = 1.5, y = 85, label = "p < 0.0001")# Add p-val
+#t test
+t.test(p2$perc.mapping[p2$mapper == "bwa"],p2$perc.mapping[p2$mapper == "bowtie2"])
+
+p1.plot + p2.plot
+
+```
+

@@ -1,0 +1,25 @@
+sample.ID,sample.type,sample.loc,sequencing.type,bowtie2.CASJ.DOC,bowtie2.CASJ.map.perc,bwa.CASJ.DOC,bwa.CASJ.map.perc,bwa.FLSJ.DOC,bwa.FLSJ.map.perc,bowtie2.FLSJ.DOC,bowtie2.FLSJ.map.perc
+Aph_californica_193641,frozen tissue,Shasta National Forest,150bp PE,15.7,96.4,17.5,98.0,17.5,98.1,15.8,96.2
+Aph_californica_195411,frozen tissue,Freeman Canyon,150bp PE,22.4,97.2,25.3,98.4,25.3,98.6,22.5,97.0
+Aph_californica_333971,frozen tissue,Calaveras County,150bp PE,15.9,95.2,17.3,96.9,17.5,97.1,16.1,95.1
+Aph_californica_334039,frozen tissue,Orange County,150bp PE,26.9,93.3,29.6,95.4,29.8,95.6,27.2,93.2
+Aph_californica_334041,frozen tissue,Orange County,150bp PE,15.1,89.1,15.8,92.5,16.2,92.8,15.4,89.0
+Aph_californica_342022,frozen tissue,Palm Desert,150bp PE,19.5,95.6,21.6,97.3,21.8,97.4,19.7,95.5
+Aph_californica_342053,frozen tissue,Whale Peak,150bp PE,17.9,95.9,20.1,97.7,20.1,97.8,18.0,95.8
+Aph_californica_342054,frozen tissue,Whale Peak,150bp PE,9.0,96.8,10.4,98.0,10.5,98.0,9.0,96.6
+Aph_californica_342072,frozen tissue,San Diego County,150bp PE,6.8,94.5,7.1,96.9,7.1,97.0,6.9,94.2
+Aph_californica_343436,frozen tissue,Baja California Sur,150bp PE,26.1,96.2,28.5,97.5,28.7,97.7,26.4,96.1
+Aph_californica_56723,toepad,Chilao campground,50bp PE,9.6,75.7,14.3,96.8,14.4,96.9,9.2,73.5
+Aph_californica_65019,toepad,Oxy campus,50bp PE,9.7,77.7,14.0,97.5,14.1,97.5,9.4,75.5
+Aph_californica_65020,toepad,Altadena,50bp PE,9.4,76.9,14.0,97.7,14.1,97.7,9.1,74.7
+Aph_californica_93535,toepad,Eagle Mountain,50bp PE,10.1,72.2,15.4,93.1,15.5,93.2,9.8,70.2
+Aph_californica_94204,toepad,Eagle Mountain,50bp PE,7.6,78.1,10.7,97.0,10.8,97.0,7.3,76.0
+Aph_californica_94205,toepad,Eagle Mountain,50bp PE,10.0,76.1,14.9,97.1,15.0,97.1,9.7,74.1
+Aph_woodhouseii_19203,toepad,Durango,50bp PE,10.7,77.6,15.2,97.1,15.3,97.2,10.4,75.9
+Aph_woodhouseii_27904,toepad,Jalisco,50bp PE,9.0,77.1,13.2,97.4,13.4,97.5,8.8,75.5
+Aph_woodhouseii_334080,frozen tissue,Kingman,150bp PE,24.3,90.7,25.9,93.3,26.4,93.6,24.7,90.8
+Aph_woodhouseii_334081,frozen tissue,Kingman,150bp PE,28.4,92.5,30.4,95.0,31.0,95.3,28.9,92.5
+Aph_woodhouseii_334096,frozen tissue,Mt. Charleston,150bp PE,8.3,96.5,8.6,98.4,8.6,98.5,8.3,96.4
+Aph_woodhouseii_50478,toepad,Chihuahua,50bp PE,8.8,76.4,12.2,94.6,12.3,94.7,8.6,74.7
+Aph_woodhouseii_68851,toepad,New Mexico,50bp PE,8.8,80.2,11.9,97.7,12.0,97.8,8.6,78.6
+Aph_woodhouseii_B-303,frozen tissue,New Mexico,50bp PE,4.7,75.6,6.5,93.3,6.7,93.6,4.7,74.1
