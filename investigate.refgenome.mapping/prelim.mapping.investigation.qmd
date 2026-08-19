@@ -1,0 +1,140 @@
+---
+title: "prelim.mapping.investigation"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### load packages
+```{r}
+library(vcfR)
+library(adegenet)
+library(StAMPP)
+library(ggplot2)
+```
+
+### perform splitstree analysis #1 - BWA & CASJ
+```{r, eval=FALSE}
+#read vcf
+v<-read.vcfR("~/Desktop/2026.eagle.mountain/bwa.CASJ.filtered.miss90.mac3.vcf.gz")
+#convert vcfR to genlight
+gen<-vcfR2genlight(v)
+#check sample names (remember the splitstree gui won't let you visualize more than 10 characters in a sample name, and all sample names must be unique)
+gen@ind.names
+#edit your sample names to fit this criteria
+gen@ind.names<-gsub("Aph_californica_","cal", gen@ind.names)
+gen@ind.names<-gsub("Aph_woodhouseii_","woo", gen@ind.names)
+#double check sample names
+gen@ind.names
+
+#assign sample names as populations (population assignments are a requirement for the stampp functions, but can be arbitrary here because we want a pairwise divergence matrix among all samples, not samples assigned populations)
+pop(gen)<-gen@ind.names
+#make pairwise divergence matrix among all samples
+sample.div <- stamppNeisD(gen, pop = FALSE)
+
+#export for splitstree
+stamppPhylip(distance.mat=sample.div, file="~/Desktop/2026.eagle.mountain/bwa.CASJ.splits.txt")
+```
+```{r}
+#open this file using the splitstree GUI. Export the network as a .svg file and use the knitr function 'include_graphics' to show the resulting tree:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/bwa.CASJ.splits.svg")
+#further changes made in adobe illustrator to prepare this for publication
+```
+
+
+### perform splitstree analysis #2 - BWA & FLSJ
+```{r, eval=FALSE}
+#read vcf
+v<-read.vcfR("~/Desktop/2026.eagle.mountain/bwa.FLSJ.filtered.miss90.mac3.vcf.gz")
+#convert vcfR to genlight
+gen<-vcfR2genlight(v)
+#check sample names (remember the splitstree gui won't let you visualize more than 10 characters in a sample name, and all sample names must be unique)
+gen@ind.names
+#edit your sample names to fit this criteria
+gen@ind.names<-gsub("Aph_californica_","cal", gen@ind.names)
+gen@ind.names<-gsub("Aph_woodhouseii_","woo", gen@ind.names)
+#double check sample names
+gen@ind.names
+
+#assign sample names as populations (population assignments are a requirement for the stampp functions, but can be arbitrary here because we want a pairwise divergence matrix among all samples, not samples assigned populations)
+pop(gen)<-gen@ind.names
+#make pairwise divergence matrix among all samples
+sample.div <- stamppNeisD(gen, pop = FALSE)
+
+#export for splitstree
+stamppPhylip(distance.mat=sample.div, file="~/Desktop/2026.eagle.mountain/bwa.FLSJ.splits.txt")
+```
+
+```{r}
+#open this file using the splitstree GUI. Export the network as a .svg file and use the knitr function 'include_graphics' to show the resulting tree:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/bwa.FLSJ.splits.svg")
+#further changes made in adobe illustrator to prepare this for publication
+```
+
+
+
+### perform splitstree analysis #3 - Bowtie2 & CASJ ref genome
+```{r, eval=FALSE}
+#read vcf
+v<-read.vcfR("~/Desktop/2026.eagle.mountain/bowtie2.CASJ.filtered.miss90.mac3.vcf.gz")
+#convert vcfR to genlight
+gen<-vcfR2genlight(v)
+#check sample names (remember the splitstree gui won't let you visualize more than 10 characters in a sample name, and all sample names must be unique)
+gen@ind.names
+#edit your sample names to fit this criteria
+gen@ind.names<-gsub("Aph_californica_","cal", gen@ind.names)
+gen@ind.names<-gsub("Aph_woodhouseii_","woo", gen@ind.names)
+#double check sample names
+gen@ind.names
+
+#assign sample names as populations (population assignments are a requirement for the stampp functions, but can be arbitrary here because we want a pairwise divergence matrix among all samples, not samples assigned populations)
+pop(gen)<-gen@ind.names
+#make pairwise divergence matrix among all samples
+sample.div <- stamppNeisD(gen, pop = FALSE)
+
+#export for splitstree
+stamppPhylip(distance.mat=sample.div, file="~/Desktop/2026.eagle.mountain/bowtie2.CASJ.splits.txt")
+```
+
+```{r}
+#open this file using the splitstree GUI. Export the network as a .svg file and use the knitr function 'include_graphics' to show the resulting tree:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/bowtie2.CASJ.splits.svg")
+#further changes made in adobe illustrator to prepare this for publication
+```
+
+
+### perform splitstree analysis #4 - Bowtie2 & FLSJ ref genome
+```{r, eval=FALSE}
+#read vcf
+v<-read.vcfR("~/Desktop/2026.eagle.mountain/bowtie2.FLSJ.filtered.miss90.mac3.vcf.gz")
+#convert vcfR to genlight
+gen<-vcfR2genlight(v)
+#check sample names (remember the splitstree gui won't let you visualize more than 10 characters in a sample name, and all sample names must be unique)
+gen@ind.names
+#edit your sample names to fit this criteria
+gen@ind.names<-gsub("Aph_californica_","cal", gen@ind.names)
+gen@ind.names<-gsub("Aph_woodhouseii_","woo", gen@ind.names)
+#double check sample names
+gen@ind.names
+
+#assign sample names as populations (population assignments are a requirement for the stampp functions, but can be arbitrary here because we want a pairwise divergence matrix among all samples, not samples assigned populations)
+pop(gen)<-gen@ind.names
+#make pairwise divergence matrix among all samples
+sample.div <- stamppNeisD(gen, pop = FALSE)
+
+#export for splitstree
+stamppPhylip(distance.mat=sample.div, file="~/Desktop/2026.eagle.mountain/bowtie2.FLSJ.splits.txt")
+
+```
+
+```{r}
+#open this file using the splitstree GUI. Export the network as a .svg file and use the knitr function 'include_graphics' to show the resulting tree:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/bowtie2.FLSJ.splits.svg")
+#further changes made in adobe illustrator to prepare this for publication
+```
+
