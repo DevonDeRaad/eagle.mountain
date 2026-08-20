@@ -1,0 +1,74 @@
+---
+title: "Run Plink to calculate relatedness"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Step 1: run Plink on the filtered SNP dataset to quantify pairwise relatedness among all samples in the dataset. I did this on the UCLA cluster with the following job script:
+```{bash, eval=FALSE}
+#### submit_job.sh START ####
+#!/bin/bash
+#$ -cwd
+#$ -o ./joblog.$JOB_ID.txt                   #set the job log output file
+#$ -j y                                      #set error = Merged with joblog
+#$ -l h_rt=1:00:00,h_data=3G      #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
+#$ -pe shared 1                              #specify number of CPUs requested
+
+#load necessary modules
+. /u/local/Modules/default/init/modules.sh
+
+#run plink2 (v2.0.0) to make 'KING' relatedness table
+/u/project/aguillon/shared_bin/plink2 --vcf final.trimmed.snps.vcf --make-king-table
+```
+
+### Step 2: Read in Plink table to this R session and visualize
+```{r}
+#load packages
+library(ggplot2)
+library(reshape2)
+
+#read in data
+x<-read.table("~/Desktop/2026.eagle.mountain/plink2.kin0")
+
+#visualize data
+hist(x$V6, breaks=100, xlim = c(-0.5,0.5))
+#are there any individuals more related than expected by chance in a wild pop (i.e., > 0)
+hist(x$V6, breaks=100, xlim = c(0,0.5))
+
+#convert the plink table into a matrix for plotting
+rev_comp <- x
+rev_comp$V1 <- x$V2
+rev_comp$V2 <- x$V1
+full_comp <- rbind(x, rev_comp)
+full_comp<-full_comp[,c(1,2,6)]
+# Include diagonal (self comparisons)
+items <- unique(c(x$V1, x$V2))
+diag_df <- data.frame(V1 = items, V2 = items, V6 = 1)
+full_comp <- rbind(full_comp, diag_df)
+# Create matrix
+mat <- dcast(full_comp, V1 ~ V2, value.var = "V6")
+rownames(mat) <- mat$V1
+mat <- mat[,-1]  # remove redundant column
+mat <- as.matrix(mat)
+
+#make heatmap
+heatmap(mat, Rowv = NA, Colv = NA, scale = "none", col = heat.colors(256))
+
+# Melt for ggplot
+melted <- melt(mat)
+
+ggplot(melted, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("black","grey","red"), values = c(0,.83,1),limits=c(-2.5,0.5))+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))+
+  geom_text(aes(label = round(value,2)), color = "black", size = 2)
+
+```
+
