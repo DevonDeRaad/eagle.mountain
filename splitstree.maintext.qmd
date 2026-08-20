@@ -1,0 +1,84 @@
+---
+title: "making a splitstree for the main text"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### load packages
+```{r}
+library(vcfR)
+library(adegenet)
+library(StAMPP)
+library(ggplot2)
+library(SNPfiltR)
+```
+
+### Filter vcf file to remove technical replicates and invariant SNPs
+```{r, eval=FALSE}
+#read vcf
+v<-read.vcfR("~/Desktop/2026.eagle.mountain/bwa.FLSJ.filtered.miss90.mac3.vcf.gz")
+
+#remove the technical replicate with the lower sequencing depth
+vcfR.trim<-v[,colnames(v@gt) != "Aph_woodhouseii_B-303"]
+
+#remove invariant SNPs
+vcfR.trim<-min_mac(vcfR.trim, min.mac = 1)
+
+#write out the filtered/trimmed vcf 
+vcfR::write.vcf(vcfR.trim, file="~/Desktop/2026.eagle.mountain/final.trimmed.snps.vcf.gz")
+
+#how many SNPs and missing percentage in this final filtered vcf?
+vcfR.trim
+table(extract.gt(vcfR.trim), useNA = "always")
+#23 samples, 9419028 SNPs, 2.44% missing genotypes
+
+#thin to no SNPs closer than 5KB
+filt.thin<-distance_thin(vcfR.trim, min.distance = 5000)
+
+#how many SNPs and missing percentage in this final filtered vcf?
+filt.thin
+table(extract.gt(filt.thin), useNA = "always")
+
+#write out the filtered/trimmed vcf 
+vcfR::write.vcf(filt.thin, file="~/Desktop/2026.eagle.mountain/final.trimmed.snps.5KBthinned.vcf.gz")
+
+#calculate stats on this vcf
+x<-missing_by_sample(vcfR.trim)
+x[["unfiltered.stats"]]
+```
+
+### perform splitstree analysis 
+```{r, eval=FALSE}
+#convert vcfR to genlight
+gen<-vcfR2genlight(vcfR.trim)
+#check sample names (remember the splitstree gui won't let you visualize more than 10 characters in a sample name, and all sample names must be unique)
+gen@ind.names
+#edit your sample names to fit this criteria
+gen@ind.names<-gsub("Aph_californica_","cal", gen@ind.names)
+gen@ind.names<-gsub("Aph_woodhouseii_","woo", gen@ind.names)
+#double check sample names
+gen@ind.names
+
+#assign sample names as populations (population assignments are a requirement for the stampp functions, but can be arbitrary here because we want a pairwise divergence matrix among all samples, not samples assigned populations)
+pop(gen)<-gen@ind.names
+#make pairwise divergence matrix among all samples
+sample.div <- stamppNeisD(gen, pop = FALSE)
+
+#export for splitstree
+stamppPhylip(distance.mat=sample.div, file="~/Desktop/2026.eagle.mountain/final.filtered.splits.txt")
+```
+
+
+### check out the results
+```{r}
+#open this file using the splitstree GUI. Export the network as a .svg file and use the knitr function 'include_graphics' to show the resulting tree:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/final.filtered.splits.svg")
+#further changes made in adobe illustrator to prepare this for publication
+```
+
