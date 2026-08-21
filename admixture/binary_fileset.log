@@ -1,0 +1,29 @@
+PLINK v1.90b6.24 64-bit (6 Jun 2021)
+Options in effect:
+  --allow-extra-chr
+  --double-id
+  --make-bed
+  --out binary_fileset
+  --vcf final.trimmed.snps.5KBthinned.vcf
+
+Hostname: n7416
+Working directory: /u/project/aguillon/dderaad/eagle.mountain.scrubjays/main.text/admixture
+Start time: Thu Aug 20 11:07:14 2026
+
+Random number seed: 1787249234
+192097 MB RAM detected; reserving 96048 MB for main workspace.
+--vcf: binary_fileset-temporary.bed + binary_fileset-temporary.bim +
+binary_fileset-temporary.fam written.
+201511 variants loaded from .bim file.
+23 people (0 males, 0 females, 23 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to binary_fileset.nosex .
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 23 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.973145.
+201511 variants and 23 people pass filters and QC.
+Note: No phenotypes present.
+--make-bed to binary_fileset.bed + binary_fileset.bim + binary_fileset.fam ...
+done.
+
+End time: Thu Aug 20 11:07:17 2026
