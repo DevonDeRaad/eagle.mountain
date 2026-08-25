@@ -1,0 +1,161 @@
+---
+title: "make mtDNA haplotype network from WGS data"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Begin
+Before I actually ran the whole pipeline, I extracted just the mitochondrial scaffold identified a priori in my reference genome on NCBI for a handful of samples to make sure that there were lots of reads and that the mapping seemed reasonable. For this analysis, this was the Florida Scrub-jay reference genome (https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_041296385.2/) and scaffold "NC_051467.1". 
+```{r}
+#here's a screenshot of IGV showing lots of coverage and big differences in overall coverage between samples:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/eagle.mountain/mito.extraction/igv.screenshot.png")
+```
+
+
+### Once I felt good about calling genotypes from this scaffold, I submitted this batch job on the UCLA cluster to isolate the mitochondrial scaffold from each bam file, genotype it with ploidy 0, and generate a consensus fasta sequence from each sample for the entire mitogenome
+```{bash, eval=FALSE}
+#### submit_job.sh START ####
+#!/bin/bash
+#$ -cwd
+#$ -o ./joblog.$JOB_ID.$TASK_ID.txt          #set the job log output file
+#$ -j y                   #set error = Merged with joblog
+#$ -l h_rt=24:00:00,h_data=5G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
+#$ -pe shared 1             #specify number of CPUs requested
+#  Job array indexes (1-200: by 1)
+#$ -t 1-13:1
+
+#load modules
+. /u/local/Modules/default/init/modules.sh
+#load programs
+module load bcftools #(version: 1.11)
+module load samtools #(Version: 1.15)
+
+#make folder to hold output
+#mkdir mito.bams
+
+# define the reference genome
+refgenome=/u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/FLSJ.fna
+
+# isolate base name for this replicate
+sample=$( head -n${SGE_TASK_ID} /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/tissue.basenames.txt | tail -n1 )
+
+#isolate mtDNA scaffold
+samtools view -b bam_files/${sample}_final_filtered.bam NC_051467.1 > mito.bams/${sample}_mito.bam
+#index resulting bam file
+samtools index mito.bams/${sample}_mito.bam
+
+###run bcftools to genotype
+bcftools mpileup -a FORMAT/DP,FORMAT/AD -Ou -f ${refgenome} mito.bams/${sample}_mito.bam | \
+bcftools call -m --ploidy 1 --output-type z -o mito.bams/${sample}.mito.vcf.gz
+
+#tabix index
+/u/project/aguillon/shared_bin/tabix-0.2.6/tabix mito.bams/${sample}.mito.vcf.gz
+
+#convert vcf to consensus fasta (mt.scaff.fna is the mitochondrial scaffold only, which I manually pulled out and put in its own .fna file)
+bcftools consensus -f mt.scaff.fna mito.bams/${sample}.mito.vcf.gz > mito.bams/${sample}.mito.fa
+
+#rename fasta header to match the sample name
+sed -i "1s/.*/>${sample}/" mito.bams/${sample}.mito.fa
+
+#after every sample has run, use the following code to concatenate the alignment:
+#cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
+```
+
+### I repeated this procedure for all of the toepad samples
+```{bash, eval=FALSE}
+#### submit_job.sh START ####
+#!/bin/bash
+#$ -cwd
+#$ -o ./joblog.$JOB_ID.$TASK_ID.txt          #set the job log output file
+#$ -j y                   #set error = Merged with joblog
+#$ -l h_rt=24:00:00,h_data=5G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
+#$ -pe shared 1             #specify number of CPUs requested
+#  Job array indexes (1-200: by 1)
+#$ -t 1-11:1
+
+#load modules
+. /u/local/Modules/default/init/modules.sh
+#load programs
+module load bcftools #(version: 1.11)
+module load samtools #(Version: 1.15)
+
+#make folder to hold output
+#mkdir mito.bams
+
+# define the reference genome
+refgenome=/u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/FLSJ.fna
+
+# isolate base name for this replicate
+sample=$( head -n${SGE_TASK_ID} /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/toepad.basenames.txt | tail -n1 )
+
+#isolate mtDNA scaffold
+samtools view -b bam_files/${sample}_final_filtered.bam NC_051467.1 > mito.bams/${sample}_mito.bam
+#index resulting bam file
+samtools index mito.bams/${sample}_mito.bam
+
+###run bcftools to genotype
+bcftools mpileup -a FORMAT/DP,FORMAT/AD -Ou -f ${refgenome} mito.bams/${sample}_mito.bam | \
+bcftools call -m --ploidy 1 --output-type z -o mito.bams/${sample}.mito.vcf.gz
+
+#tabix index
+/u/project/aguillon/shared_bin/tabix-0.2.6/tabix mito.bams/${sample}.mito.vcf.gz
+
+#convert vcf to consensus fasta (mt.scaff.fna is the mitochondrial scaffold only, which I manually pulled out and put in its own .fna file)
+bcftools consensus -f mt.scaff.fna mito.bams/${sample}.mito.vcf.gz > mito.bams/${sample}.mito.fa
+
+#rename fasta header to match the sample name
+sed -i "1s/.*/>${sample}/" mito.bams/${sample}.mito.fa
+
+#after every sample has run, use the following code to concatenate the alignment:
+#cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
+```
+
+Then, as it says in the script, after all samples were complete, I used the following code to concatenate the alignment:
+cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
+
+### Finally, load in your alignment and create the haplotype network
+```{r}
+# Make sure the required libraries are loaded
+library(ape)
+library(pegas)
+library(DECIPHER)
+
+#Read the unaligned FASTA file, in Biostrings format
+dna_set<- readDNAStringSet("~/Desktop/2026.eagle.mountain/mito.bams/mito.alignment.fa")
+#Perform the multiple sequence alignment
+aligned_set<- AlignSeqs(dna_set)
+#Convert directly to ape's DNAbin format
+dna_aligned<- as.DNAbin(aligned_set)
+#Compute haplotypes and network
+hap<- haplotype(dna_aligned)
+net<- haploNet(hap)
+#Plot the network
+plot(net, size = attr(net, "freq"), fast = FALSE)
+
+#fix up the plot
+#Get the original sample names for each haplotype group
+hap_labels<- names(dna_aligned)
+#Rename the haplotypes directly in the 'hap' object (This fixes the error)
+rownames(hap)<- hap_labels
+#build the network (it will inherit the new names automatically)
+net<- haploNet(hap)
+#replot
+plot(net, 
+     size = attr(net, "freq") * 50,     # Scales node sizes down slightly
+     scale.ratio = 1,                    # Adjusts mutation line lengths
+     cex = 0.35,                          # Shrinks the text label font size
+     show.mutation = 3,                  # 1 = ticks, 2 = numbers, 0 = nothing
+     fast = FALSE                        # Uses alternative layout optimization
+)
+
+#I then saved the above plot as a pdf and went and manually fixed all the font sizes to make them readable, which resulted in this plot, which will go in the suppmat:
+knitr::include_graphics("~/Desktop/2026.eagle.mountain/eagle.mountain/mito.extraction/fixed.haplotype.network.pdf")
+```
+
+
