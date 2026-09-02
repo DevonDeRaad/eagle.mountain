@@ -1,0 +1,139 @@
+---
+title: "Compute runs of homozygosity and visualize ROH"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Step 1: To calculate ROH using depth-filtered, all-sites vcf as input, I ran the following code on the UCLA cluster:
+```{bash, eval=FALSE}
+#### submit_job.sh START ####
+#!/bin/bash
+#$ -cwd
+#$ -o ./joblog.$JOB_ID.txt          #set the job log output file
+#$ -j y                   #set error = Merged with joblog
+#$ -l h_rt=5:00:00,h_data=20G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
+#$ -pe shared 1              #specify number of CPUs requested
+#  Job array indexes (1-25: by 1)
+#$ -t 1-23:1
+
+#load modules
+. /u/local/Modules/default/init/modules.sh
+#load programs
+module load bcftools #(version: 1.11)
+
+#Specify base name variable so each job runs on a unique sample
+basename_array=$( head -n${SGE_TASK_ID} basenames.txt | tail -n1 )
+
+#run bcftools roh
+bcftools roh -G30 --AF-dflt 0.4 /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/bwa.mem/vcf/${basename_array}.depth.filtered.vcf.gz -o ${basename_array}.roh.txt
+
+#process file (this code removes all lines beginning with 'ST' from the text file
+sed '/^ST/d' ${basename_array}.roh.txt > ${basename_array}.processed.roh.txt
+
+#calculate fROH by dividing the total ROH length by the total length of the nuclear scaffolds you end up retaining
+```
+
+### Step 2: read in the processed ROH output and visualize
+```{r}
+#I ran: scp -r 'dderaad@dtn.hoffman2.idre.ucla.edu:/u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/main.text/roh/*.processed.roh.txt' /Users/devonderaad/Desktop/2026.eagle.mountain/roh.output
+#to read in the files to my local machine
+
+#Get a list of all the output files (.posterior file extension)
+posterior.files<-Sys.glob("~/Desktop/2026.eagle.mountain/roh.output/*.processed.roh.txt")
+
+#make an empty dataframe that can be filled with ancestry info:
+fROH<-data.frame(sample=character(),fROH=numeric())
+
+#make an empty list to hold all the filtered ROH data frame's
+roh.df<-list()
+
+#using a for loop, plot ancestry across Chr 1, do ancestry painting across all chroms...
+#and calculate ancestry proportion across the genome, for each sample
+for (i in 1:length(posterior.files)){
+  
+  ### Read in ancestry from the given sample
+  x <- read.table(posterior.files[i], header=FALSE)
+  colnames(x)<-c("RG","Sample","Chromosome","Start","End","Length","Number.of.markers","Quality")
+  #compute marker density for each ROH
+  x$marker.density<-x$Number.of.markers/x$Length
+
+  #exclude any runs present on the Z, W, or mtDNA scaffolds:
+  x<-x[x$Chromosome != "NC_138418.1" & x$Chromosome != "NC_138417.1" & x$Chromosome != "NC_051467.1",]
+  
+  #sum the total length of all called ROH
+  sum(x$Length)
+  
+  #exclude ROH unless they are quality > 90
+  x<-x[x$Quality > 90,]
+  #exclude ROH unless they have a marker density > 0.001
+  x<-x[x$marker.density > 0.001,]
+
+  #sum the total length of all accepted ROH
+  sum(x$Length)
+  
+  #divide that by the length of the reference genome minus the three scaffolds above
+  #refgenome length - W - Z - mtDNA
+  1330898477 - 20979278	- 72301355 - 16907
+  
+  #fROH calculation
+  print(gsub(".processed.roh.txt","",gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/roh.output/","",posterior.files[i])))
+  print(sum(x$Length)/1237600937)
+  
+  #store info in data frame
+  fROH[i,1]<-gsub(".processed.roh.txt","",gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/roh.output/","",posterior.files[i]))
+  fROH[i,2]<-sum(x$Length)/1237600937
+  
+  #store entire data frame
+  roh.df[[i]]<-x
+}
+  
+```
+
+### Visualize
+```{r}
+#load libraries
+library(ggplot2)
+library(gghalves)
+
+#add subspecies info to data frame
+fROH$subspecies<-c(rep("cali", times=3),rep("obsc", times=6),"hypo",rep("obsc", times=3),rep("cana", times=3),"gris","gris",rep("nev", times=3),"gris","wood")
+#reorder factors for plotting
+fROH$subspecies <- factor(fROH$subspecies, levels = unique(fROH$subspecies))
+
+#plot
+ggplot(fROH, aes(x = subspecies, y = fROH)) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  geom_point() +
+  labs(y = "fROH") +
+  theme_classic()
+
+#replot
+ggplot(fROH, aes(x = subspecies, y = fROH)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  theme_classic()
+
+#add sample type info
+fROH$type<-c(rep("muscle", times=10),rep("toepad", times=8),rep("muscle", times=3),rep("toepad", times=2))
+
+#replot one more time
+ggplot(fROH, aes(x = subspecies, y = fROH, shape=type)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  theme_classic()
+
+#save
+plotx<-ggplot(fROH, aes(x = subspecies, y = fROH)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  theme_classic()
+
+#ggsave("~/Desktop/2026.eagle.mountain/froh.pdf", plotx, width = 6.5, height = 2, units = "in")
+```
+
