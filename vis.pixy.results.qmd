@@ -1,5 +1,5 @@
 ---
-title: "Visualize Pixy results"
+title: "Run Pixy and visualize results"
 format:
   html:
     code-fold: show
@@ -9,6 +9,7 @@ toc-title: Document Contents
 number-sections: true
 embed-resources: true
 ---
+
 
 
 ### Read in data and create long-format table to hold it
@@ -34,7 +35,7 @@ for (i in 1:length(unique(complete.df$pop))){
   print(
 # plotting summary statistics along a single chromosome
 complete.df %>%
-  filter(chromosome == "NC_091017.1") %>%
+  filter(chromosome == "NC_091013.1") %>%
   filter(pop == unique(complete.df$pop)[i]) %>%
   mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
   ggplot(aes(x = chr_position, y = avg_pi*1000))+
@@ -46,19 +47,46 @@ complete.df %>%
   scale_y_continuous(expand = c(0, 0))
 )
 }
-
 ```
 
-### investigate
+### Plot genetic diversity along chrom2
 ```{r}
-#Aph_californica_93535 seems to have a big ROH chunk in the middle of chrom1
-#investigate further
-test<-complete.df[complete.df$pop=="Aph_californica_93535",]
-#looks like 76-86Mb is a ~10Mb ROH in this individual
-#did it get successfully called using BCFtools ROH?
-rohtable <- read.table("~/Desktop/2026.eagle.mountain/roh.output/Aph_californica_93535.processed.roh.txt", header=FALSE)
-colnames(rohtable)<-c("RG","Sample","Chromosome","Start","End","Length","Number.of.markers","Quality")
+for (i in 1:length(unique(complete.df$pop))){
+  print(
+# plotting summary statistics along a single chromosome
+complete.df %>%
+  filter(chromosome == "NC_091015.1") %>%
+  filter(pop == unique(complete.df$pop)[i]) %>%
+  mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
+  ggplot(aes(x = chr_position, y = avg_pi*1000))+
+  geom_col(fill="black")+
+  xlab(paste("Position on Chromosome 2 (Mb) -",unique(complete.df$pop)[i]))+
+  ylab("Hets per Kb")+
+  theme_bw()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))
+)
+}
+```
 
+### Plot genetic diversity along chrom4
+```{r}
+for (i in 1:length(unique(complete.df$pop))){
+  print(
+# plotting summary statistics along a single chromosome
+complete.df %>%
+  filter(chromosome == "NC_091017.1") %>%
+  filter(pop == unique(complete.df$pop)[i]) %>%
+  mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
+  ggplot(aes(x = chr_position, y = avg_pi*1000))+
+  geom_col(fill="black")+
+  xlab(paste("Position on Chromosome 4 (Mb) -",unique(complete.df$pop)[i]))+
+  ylab("Hets per Kb")+
+  theme_bw()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))
+)
+}
 ```
 
 ### Calc genetic diversity per sample
@@ -80,7 +108,6 @@ for (i in 1:length(unique(complete.df$pop))){
   #store in df alongside sample info
   gendiv.df[i,]<-c(unique(complete.df$pop)[i],sum(x$count_diffs, na.rm = TRUE) / sum(x$no_sites, na.rm = TRUE))
 }
-
 ```
 
 
@@ -124,6 +151,5 @@ plotx<-ggplot(gendiv.df, aes(x = subspecies, y = gendiv*1000)) +
   theme_classic()
 
 #ggsave("~/Desktop/2026.eagle.mountain/gendiv.pdf", plotx, width = 6.5, height = 2, units = "in")
-
 ```
 
