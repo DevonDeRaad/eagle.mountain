@@ -1,0 +1,208 @@
+---
+title: "which ancestry states harbor the most diagnostic alleles?"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+
+### Investigate fixed diffs in the empirical data
+```{r}
+library(ggplot2)
+#read in fixed diffs
+fixed.diffs<-read.csv("~/Desktop/2026.eagle.mountain/cana.fixed.csv", header=F)
+colnames(fixed.diffs)<-c("chrom","pos")
+
+#Get a list of all the output files (.posterior file extension)
+posterior.files<-Sys.glob("~/Desktop/2026.eagle.mountain/ancestryHMM/*.posterior")
+
+#open up empty list to hold chunk frames
+chunk.frames<-list()
+
+#loop to read in each chunk df
+for (i in c(4:6)){
+  #isolate individual
+  x<-read.csv(file = paste0(gsub(".posterior","",posterior.files[i]),"chunks.csv"))
+  chunk.frames[[i]]<-x
+}
+#renumber
+chunk.frames<-chunk.frames[c(4:6)]
+
+##### loop to calculate proportion diagnostic SNPs in each ancestry class, in each sample
+for (k in 1:3){
+  samp<-chunk.frames[[k]]
+  #empty vector to hold ancestry
+  anc.vec<-c()
+  for (i in unique(fixed.diffs$chrom)){
+    #isolate the ancestry calls on this chromosome
+    samp.chrom<-samp[samp$chrom == i,]
+    #isolate the fixed alleles on this chromosome
+    fixed.chrom<-fixed.diffs[fixed.diffs$chrom == i,]
+    #identify the ancestry of each fixed diff
+    # Find the index where the spot is between start and end
+    #open empty vector
+    anc<-c()
+    for (j in 1:nrow(fixed.chrom)){
+      if(length(samp.chrom$ancestry[which(fixed.chrom$pos[j] >= samp.chrom$start & fixed.chrom$pos[j] <= samp.chrom$end)]) == 0){anc[j]<-NA}
+      else{anc[j]<-samp.chrom$ancestry[which(fixed.chrom$pos[j] >= samp.chrom$start & fixed.chrom$pos[j] <= samp.chrom$end)]}
+    }
+    #save data
+    anc.vec<-c(anc.vec,anc)
+  }
+  print((sum(anc.vec == 0, na.rm = T)/sum(samp$dist[samp$ancestry == 0]))*1000000)
+  print((sum(anc.vec == 1, na.rm = T)/sum(samp$dist[samp$ancestry == 1]))*1000000)
+  print((sum(anc.vec == 2, na.rm = T)/sum(samp$dist[samp$ancestry == 2]))*1000000)
+}
+```
+
+
+
+### randomly rain down diagnostic alleles across all called ancestry chunks to create null distirbutions and perform permutation test
+```{r}
+#store each vector of simulated values
+cali.diag.anc<-list()
+het.diag.anc<-list()
+wood.diag.anc<-list()
+
+#loop to simulate 10K iterations of 152 randomized diagnostic alleles in each sample
+for (k in 1:3){
+  samp<-chunk.frames[[k]]
+  #linearize ancestry
+  #calc continuous starting location of linearized ancestry
+  start.loc<-c(0)
+  for (i in 2:nrow(samp)){
+    start.loc[i]<-start.loc[i-1]+samp$dist[i-1]+1
+  }
+  #manually correct the first starting location to 0 (math doesn't work if you start with 1 before doing the loop)
+  start.loc[1]<-1
+  samp$startloc<-start.loc
+  #calc continuous ending location of linearized ancestry
+  end.loc<-c(samp$dist[1])
+  for (i in 2:nrow(samp)){
+    end.loc[i]<-end.loc[i-1]+1+samp$dist[i]
+  }
+  samp$endloc<-end.loc
+  #make vectors to hold results
+  cali.diag<-c()
+  het.diag<-c()
+  wood.diag<-c()
+    for (m in 1:10000){
+    #pull out 152 random sites
+      loc<-sample(1:max(samp$endloc), 152)
+      #get the ancestry at those sites
+      randanc<-c()
+      for (j in 1:152){
+        randanc[j]<-samp$ancestry[which(loc[j] >= samp$startloc & loc[j] <= samp$endloc)]
+      }
+      #record proportion diagnostic sites in each ancestry class
+      cali.diag[m]<-(sum(randanc == 0, na.rm = T)/sum(samp$dist[samp$ancestry == 0]))*1000000
+      het.diag[m]<-(sum(randanc == 1, na.rm = T)/sum(samp$dist[samp$ancestry == 1]))*1000000
+      wood.diag[m]<-(sum(randanc == 2, na.rm = T)/sum(samp$dist[samp$ancestry == 2]))*1000000
+    }
+  print(hist(cali.diag), breaks=100)
+  print(hist(het.diag), breaks=100)
+  print(hist(wood.diag), breaks=100)
+  #save vectors of results 
+  cali.diag.anc[[k]]<-cali.diag
+  het.diag.anc[[k]]<-het.diag
+  wood.diag.anc[[k]]<-wood.diag
+}
+```
+
+### Visualize results
+```{r}
+#get sample order:
+posterior.files[[4]]
+posterior.files[[5]]
+posterior.files[[6]]
+
+#make df for plotting
+plotdf<-data.frame(sample=c(rep(93535, times=3),rep(94204, times=3),rep(94205, times=3)),
+                   ancestry=rep(c("cali","het","wood"), times=3),
+                   diagnostics.per.Mb=c(0.2304785,0.07881851,0.03748458,0.170356,
+                                        0.05838997,0.2676976,0.1698805,0.04890941,0.3131957))
+
+##### Sample 93535
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.diag.anc[[1]], breaks = 25, main = paste("p = ",(sum(cali.diag.anc[[1]] >= plotdf$diagnostics.per.Mb[1])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[1], col="red")
+#het
+hist(het.diag.anc[[1]], breaks = 25, main = paste("p = ",(sum(het.diag.anc[[1]] <= plotdf$diagnostics.per.Mb[2])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[2], col="red")
+#wood
+hist(wood.diag.anc[[1]], breaks = 25, main = paste("p = ",(sum(wood.diag.anc[[1]] <= plotdf$diagnostics.per.Mb[3])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[3], col="red")
+
+#plot
+ggplot(plotdf[plotdf$sample=="93535",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[1]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 93535", y = "diagnostics per Mb")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="93535",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[1]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 93535", y = "diagnostics per Mb")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/93535.anc.diag.pdf", plot = plotsave, width = (6.5/3), height = 2)
+
+
+##### Sample 94204
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.diag.anc[[2]], breaks = 25, main = paste("p = ",(sum(cali.diag.anc[[2]] >= plotdf$diagnostics.per.Mb[4])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[4], col="red")
+#het
+hist(het.diag.anc[[2]], breaks = 25, main = paste("p = ",(sum(het.diag.anc[[2]] <= plotdf$diagnostics.per.Mb[5])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[5], col="red")
+#wood
+hist(wood.diag.anc[[2]], breaks = 10, main = paste("p = ",(sum(wood.diag.anc[[2]] >= plotdf$diagnostics.per.Mb[6])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[6], col="red")
+
+#plot
+ggplot(plotdf[plotdf$sample=="94204",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[2]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94204", y = "diagnostics per Mb")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="94204",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[2]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94204", y = "diagnostics per Mb")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/94204.anc.diag.pdf", plot = plotsave, width = (6.5/3), height = 2)
+
+
+##### Sample 94205
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.diag.anc[[3]], breaks = 25, main = paste("p = ",(sum(cali.diag.anc[[3]] >= plotdf$diagnostics.per.Mb[7])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[7], col="red")
+#het
+hist(het.diag.anc[[3]], breaks = 25, main = paste("p = ",(sum(het.diag.anc[[3]] <= plotdf$diagnostics.per.Mb[8])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[8], col="red")
+#wood
+hist(wood.diag.anc[[3]], breaks = 25, main = paste("p = ",(sum(wood.diag.anc[[3]] >= plotdf$diagnostics.per.Mb[9])/10000)*2))
+abline(v=plotdf$diagnostics.per.Mb[9], col="red")
+#plot
+ggplot(plotdf[plotdf$sample=="94205",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[3]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94205", y = "diagnostics per Mb")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="94205",], aes(x = ancestry, y = diagnostics.per.Mb)) +
+  geom_col() +
+  geom_hline(yintercept = (152*1000000)/sum(chunk.frames[[3]]$dist), linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94205", y = "diagnostics per Mb")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/94205.anc.diag.pdf", plot = plotsave, width = (6.5/3), height = 2)
+
+```
+
+

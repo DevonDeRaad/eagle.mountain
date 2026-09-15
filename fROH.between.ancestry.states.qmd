@@ -1,0 +1,302 @@
+---
+title: "compare fROH between ancestry states"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+
+### read in chunk data and ROH data
+```{r}
+#Get a list of all the output files (.posterior file extension)
+posterior.files<-Sys.glob("~/Desktop/2026.eagle.mountain/ancestryHMM/*.posterior")
+
+#open up empty list to hold chunk frames
+chunk.frames<-list()
+
+#loop to read in each chunk df
+for (i in c(4:6)){
+  #isolate individual
+  x<-read.csv(file = paste0(gsub(".posterior","",posterior.files[i]),"chunks.csv"))
+  #exclude any runs present on the Z, W, or mtDNA scaffolds:
+  x<-x[x$chrom != "NC_138418.1" & x$chrom != "NC_138417.1" & x$chrom != "NC_051467.1",]
+  chunk.frames[[i]]<-x
+}
+#renumber
+chunk.frames<-chunk.frames[c(4:6)]
+
+
+#loop to read in ROH data
+#Get a list of all the output files (.posterior file extension)
+posterior.files<-Sys.glob("~/Desktop/2026.eagle.mountain/roh.output/*.processed.roh.txt")
+
+#make an empty list to hold all the filtered ROH data frame's
+roh.df<-list()
+
+#loop to read in ROH
+for (i in c(14:16)){
+  
+  ### Read in ancestry from the given sample
+  x <- read.table(posterior.files[i], header=FALSE)
+  colnames(x)<-c("RG","Sample","Chromosome","Start","End","Length","Number.of.markers","Quality")
+  #compute marker density for each ROH
+  x$marker.density<-x$Number.of.markers/x$Length
+
+  #exclude any runs present on the Z, W, or mtDNA scaffolds:
+  x<-x[x$Chromosome != "NC_138418.1" & x$Chromosome != "NC_138417.1" & x$Chromosome != "NC_051467.1",]
+  
+  #exclude ROH unless they are quality > 90
+  x<-x[x$Quality > 90,]
+  #exclude ROH unless they have a marker density > 0.001
+  x<-x[x$marker.density > 0.001,]
+
+  #sum the total length of all accepted ROH
+  sum(x$Length)
+
+  #store entire data frame
+  roh.df[[i]]<-x
+}
+#renumber
+roh.df<-roh.df[c(14:16)]
+
+##### loop to calculate fROH in each ancestry class, in each sample
+for (k in 1:3){
+  samp<-chunk.frames[[k]]
+  samproh<-roh.df[[k]]
+  #make vectors to hold results
+  cali.ROH<-c()
+  het.ROH<-c()
+  wood.ROH<-c()
+  #begin counter
+  t<-1
+  for (i in unique(samproh$Chromosome)){
+    #isolate the ancestry calls on this chromosome
+    samp.chrom<-samp[samp$chrom == i,]
+    #isolate the ROH calls on this chromosome
+    samproh.chrom<-samproh[samproh$Chromosome == i,]
+    
+    #identify ancestry in ROH segments for this chromosome
+    x<-c()
+    y<-c()
+    z<-c()
+    for (j in 1:nrow(samproh.chrom)){
+      start.overlap<-pmax(samp.chrom$start, samproh.chrom$Start[j])
+      end.overlap<-pmin(samp.chrom$end, samproh.chrom$End[j])
+      samp.chrom$overlap<-pmax(0, end.overlap - start.overlap)
+      x[j]<-sum(samp.chrom$overlap[samp.chrom$ancestry == 0])
+      y[j]<-sum(samp.chrom$overlap[samp.chrom$ancestry == 1])
+      z[j]<-sum(samp.chrom$overlap[samp.chrom$ancestry == 2])
+    }
+    
+    #record results for this chromosome
+    cali.ROH[t]<-sum(x)
+    het.ROH[t]<-sum(y)
+    wood.ROH[t]<-sum(z)
+    #update counter
+    t<-t+1
+  }
+  
+  #calc fROH in cali ancestry
+  print(sum(cali.ROH)/sum(samp$dist[samp$ancestry == 0]))
+  #calc fROH in het ancestry
+  print(sum(het.ROH)/sum(samp$dist[samp$ancestry == 1]))
+  #calc fROH in wood ancestry
+  print(sum(wood.ROH)/sum(samp$dist[samp$ancestry == 2]))
+}
+```
+
+### Visualize results
+```{r}
+#load libraries
+library(ggplot2)
+library(gghalves)
+
+#make dataframe
+plotdf<-data.frame(sample=c(rep(93535, times=3),rep(94204, times=3),rep(94205, times=3)),
+                   ancestry=c(rep(c("cali","het","wood"),times=3)),
+                   fROH=c(0.03705854, 0.003084996, 0.08102324, 0.02402474, 0.01016961, 0.01410885, 0.02681929, 0.001781416, 0.03689427))
+
+#plot
+ggplot(plotdf, aes(x = ancestry, y = fROH)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  theme_classic()
+
+#save
+plotsave<-ggplot(plotdf, aes(x = ancestry, y = fROH)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  theme_classic()
+
+ggsave(filename = "~/Desktop/2026.eagle.mountain/ancestry.fROH.pdf", plot = plotsave, width = 3.25, height = 2)
+
+sum(samproh$Length)/sum(samp$dist)
+```
+
+
+### randomly rain down diagnostic alleles across all called ancestry chunks to create null distirbutions and perform permutation test
+```{r}
+#store each vector of simulated values
+cali.anc<-list()
+het.anc<-list()
+wood.anc<-list()
+
+#loop to simulate 10K iterations of the same number and size of ROH chunks rained randomly across the genome of each sample
+for (k in 1:3){
+  #isolate ancestry calls and ROH calls for the given sample
+  samp<-chunk.frames[[k]]
+  samproh<-roh.df[[k]]
+  #linearize ancestry
+  #calc continuous starting location of linearized ancestry
+  start.loc<-c(0)
+  for (i in 2:nrow(samp)){
+    start.loc[i]<-start.loc[i-1]+samp$dist[i-1]+1
+  }
+  #manually correct the first starting location to 0 (math doesn't work if you start with 1 before doing the loop)
+  start.loc[1]<-1
+  samp$startloc<-start.loc
+  #calc continuous ending location of linearized ancestry
+  end.loc<-c(samp$dist[1])
+  for (i in 2:nrow(samp)){
+    end.loc[i]<-end.loc[i-1]+1+samp$dist[i]
+  }
+  samp$endloc<-end.loc
+  #make vectors to hold results
+  cali<-c()
+  het<-c()
+  wood<-c()
+    for (m in 1:10000){
+      #store start and end points
+      loc1<-c()
+      loc2<-c()
+      #for each real ROH in the genome of this individual:
+      for (j in 1:nrow(samproh)){
+        #get a randomized start point (x) and end point (y) with the same length as the real ROH
+        loc1[j]<-sample(1:(955280075-samproh$Length[j]), 1)
+        loc2[j]<-loc1[j]+samproh$Length[j]
+      }
+      #add in new randomized start and end locations
+      samproh$randstart<-loc1
+      samproh$randend<-loc2
+      #determine the ancestry of each ROH
+      x<-c()
+      y<-c()
+      z<-c()
+      for (j in 1:nrow(samproh)){
+        start.overlap<-pmax(samp$startloc, samproh$randstart[j])
+        end.overlap<-pmin(samp$endloc, samproh$randend[j])
+        samp$overlap<-pmax(0, end.overlap - start.overlap)
+        x[j]<-sum(samp$overlap[samp$ancestry == 0])
+        y[j]<-sum(samp$overlap[samp$ancestry == 1])
+        z[j]<-sum(samp$overlap[samp$ancestry == 2])
+      }
+      #record proportion of ancestry in ROH (fROH) for each ancestry class
+      cali[m]<-(sum(x, na.rm = T)/sum(samp$dist[samp$ancestry == 0]))
+      het[m]<-(sum(y, na.rm = T)/sum(samp$dist[samp$ancestry == 1]))
+      wood[m]<-(sum(z, na.rm = T)/sum(samp$dist[samp$ancestry == 2]))
+    }
+  #save vectors of results 
+  cali.anc[[k]]<-cali
+  het.anc[[k]]<-het
+  wood.anc[[k]]<-wood
+}
+```
+
+### Visualize results
+```{r}
+#get sample order:
+posterior.files[[14]]
+posterior.files[[15]]
+posterior.files[[16]]
+
+#make df for plotting
+plotdf<-data.frame(sample=c(rep(93535, times=3),rep(94204, times=3),rep(94205, times=3)),
+                   ancestry=rep(c("cali","het","wood"), times=3),
+                   fROH=c(0.03705854,0.003084996,0.08102324,0.02402474,0.01016961,
+                          0.01410885,0.02681929,0.001781416,0.03689427))
+
+##### Sample 93535
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.anc[[1]], breaks = 100, main = paste("p = ",(sum(cali.anc[[1]] >= plotdf$fROH[1])/10000)*2))
+abline(v=plotdf$fROH[1], col="red")
+#het
+hist(het.anc[[1]], breaks = 100, main = paste("p = ",(sum(het.anc[[1]] <= plotdf$fROH[2])/10000)*2))
+abline(v=plotdf$fROH[2], col="red")
+#wood
+hist(wood.anc[[1]], breaks = 100, main = paste("p = ",(sum(wood.anc[[1]] >= plotdf$fROH[3])/10000)*2))
+abline(v=plotdf$fROH[3], col="red")
+
+#plot
+ggplot(plotdf[plotdf$sample=="93535",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.01909964, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 93535", y = "fROH")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="93535",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.01909964, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 93535", y = "fROH")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/93535.fROH.pdf", plot = plotsave, width = (6.5/3), height = 2)
+
+
+
+##### Sample 94204
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.anc[[2]], breaks = 100, main = paste("p = ",(sum(cali.anc[[2]] >= plotdf$fROH[4])/10000)*2))
+abline(v=plotdf$fROH[4], col="red")
+#het
+hist(het.anc[[2]], breaks = 100, main = paste("p = ",(sum(het.anc[[2]] <= plotdf$fROH[5])/10000)*2))
+abline(v=plotdf$fROH[5], col="red")
+#wood
+hist(wood.anc[[2]], breaks = 100, main = paste("p = ",(sum(wood.anc[[2]] >= plotdf$fROH[6])/10000)*2))
+abline(v=plotdf$fROH[6], col="red")
+
+#plot
+ggplot(plotdf[plotdf$sample=="94204",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.01500197, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94204", y = "fROH")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="94204",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.01500197, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94204", y = "fROH")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/94204.fROH.pdf", plot = plotsave, width = (6.5/3), height = 2)
+
+
+
+##### Sample 94205
+#test for enrichment or de-enrichment of diagnostic alleles in cali ancestry
+hist(cali.anc[[3]], breaks = 100, main = paste("p = ",(sum(cali.anc[[3]] >= plotdf$fROH[7])/10000)*2))
+abline(v=plotdf$fROH[7], col="red")
+#het
+hist(het.anc[[3]], breaks = 100, main = paste("p = ",(sum(het.anc[[3]] <= plotdf$fROH[8])/10000)*2))
+abline(v=plotdf$fROH[8], col="red")
+#wood
+hist(wood.anc[[3]], breaks = 100, main = paste("p = ",(sum(wood.anc[[3]] >= plotdf$fROH[9])/10000)*2))
+abline(v=plotdf$fROH[9], col="red")
+
+#plot
+ggplot(plotdf[plotdf$sample=="94205",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.0150179, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94205", y = "fROH")
+#save
+plotsave<-ggplot(plotdf[plotdf$sample=="94205",], aes(x = ancestry, y = fROH)) +
+  geom_col() +
+  geom_hline(yintercept = 0.0150179, linetype = "dashed", linewidth = 1) +
+  theme_classic() +
+  labs(x = "Ancestry state 94205", y = "fROH")
+ggsave(filename = "~/Desktop/2026.eagle.mountain/94205.fROH.pdf", plot = plotsave, width = (6.5/3), height = 2)
+```
+
