@@ -1,0 +1,196 @@
+---
+title: "Run Pixy and visualize results"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Step 1: I calculated genetic diversity in 1Mb sliding using the depth-filtered, all-sites vcf as input for each sample. I did this using Pixy, by running the following code on the UCLA cluster:
+```{bash, eval=FALSE}
+#### submit_job.sh START ####
+#!/bin/bash
+#$ -cwd
+#$ -o ./joblog.$JOB_ID.$TASK_ID.txt          #set the job log output file
+#$ -j y                   #set error = Merged with joblog
+#$ -l h_rt=10:00:00,h_data=5G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
+#$ -pe shared 1              #specify number of CPUs requested
+#  Job array indexes (1-25: by 1)
+#$ -t 1-23:1
+
+#load modules
+. /u/local/Modules/default/init/modules.sh
+#load programs
+module load conda
+conda activate pixy2 #version (2.3.2)
+module load bcftools #(version: 1.11)
+
+#base name so that the array gets one sample per job
+basename_array=$( head -n${SGE_TASK_ID} basenames.txt | tail -n1 )
+
+#write pop file for this sample
+echo -e "${basename_array}\tpop1" > ${basename_array}_popfile.txt
+
+#run pixy in 1Mb sliding windows
+### use "--chromosomes 'X'" to restrict to just certain chromosomes in the vcf. Default is all chromosomes in vcf
+pixy --stats pi \
+--vcf /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/bwa.mem/vcf/${basename_array}.depth.filtered.vcf.gz \
+--populations ${basename_array}_popfile.txt \
+--window_size 1000000 \
+--n_cores 1 \
+--output_folder /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/main.text/pixy \
+--output_prefix ${basename_array}
+
+```
+
+
+### Then, read in the output file for each sample, and create a single, long-format table to hold all of this information
+```{r}
+#Get a list of all the output files (.posterior file extension)
+pixy_files<-Sys.glob("~/Desktop/2026.eagle.mountain/pixy/*_pi.txt")
+
+#open a dataframe to hold all data together
+complete.df<-c()
+
+#in a loop, read in each dataframe, rename according to that sample, and combine
+for (i in 1:length(pixy_files)){
+  #read in dataframe
+  df<-read.table(pixy_files[i], header = T)
+  df$pop<-gsub("_pi.txt","",gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/pixy/","",pixy_files[i]))
+  complete.df<-rbind.data.frame(complete.df,df)
+}
+
+#check this worked
+table(complete.df$pop)
+```
+
+### Plot genetic diversity along chrom1
+```{r}
+#load libraries
+library(dplyr)
+library(ggplot2)
+library(gghalves)
+
+#plot in loop
+for (i in 1:length(unique(complete.df$pop))){
+  print(
+# plotting summary statistics along a single chromosome
+complete.df %>%
+  filter(chromosome == "NC_091013.1") %>%
+  filter(pop == unique(complete.df$pop)[i]) %>%
+  mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
+  ggplot(aes(x = chr_position, y = avg_pi*1000))+
+  geom_col(fill="black")+
+  xlab(paste("Position on Chromosome 1 (Mb) -",unique(complete.df$pop)[i]))+
+  ylab("Hets per Kb")+
+  theme_bw()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))
+)
+}
+```
+
+### Plot genetic diversity along chrom2
+```{r}
+for (i in 1:length(unique(complete.df$pop))){
+  print(
+# plotting summary statistics along a single chromosome
+complete.df %>%
+  filter(chromosome == "NC_091015.1") %>%
+  filter(pop == unique(complete.df$pop)[i]) %>%
+  mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
+  ggplot(aes(x = chr_position, y = avg_pi*1000))+
+  geom_col(fill="black")+
+  xlab(paste("Position on Chromosome 2 (Mb) -",unique(complete.df$pop)[i]))+
+  ylab("Hets per Kb")+
+  theme_bw()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))
+)
+}
+```
+
+### Plot genetic diversity along chrom4
+```{r}
+for (i in 1:length(unique(complete.df$pop))){
+  print(
+# plotting summary statistics along a single chromosome
+complete.df %>%
+  filter(chromosome == "NC_091017.1") %>%
+  filter(pop == unique(complete.df$pop)[i]) %>%
+  mutate(chr_position = ((window_pos_1 + window_pos_2)/2)/1000000) %>%
+  ggplot(aes(x = chr_position, y = avg_pi*1000))+
+  geom_col(fill="black")+
+  xlab(paste("Position on Chromosome 4 (Mb) -",unique(complete.df$pop)[i]))+
+  ylab("Hets per Kb")+
+  theme_bw()+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(expand = c(0, 0))
+)
+}
+```
+
+### Calc genome-wide genetic diversity per sample
+```{r}
+#open a new dataframe to store this information
+gendiv.df<-data.frame(samp=character(),
+                      gendiv=numeric())
+
+#using a for loop, calculate genome-wide genetic diversity in each sample and store it in a dataframe
+for (i in 1:length(unique(complete.df$pop))){
+  
+  ### isolate the given sample
+  x <- complete.df[complete.df$pop == unique(complete.df$pop)[i],]
+  
+  #exclude the Z, W, and mtDNA scaffolds:
+  x<-x[x$chromosome != "NC_138418.1" & x$chromosome != "NC_138417.1" & x$chromosome != "NC_051467.1",]
+  
+  #calculate the proportion of het sites across all called sites for this genome
+  #store in df alongside sample info
+  gendiv.df[i,]<-c(unique(complete.df$pop)[i],sum(x$count_diffs, na.rm = TRUE) / sum(x$no_sites, na.rm = TRUE))
+}
+```
+
+
+### Plot genome-wide genetic diversity per sample by subspecies
+```{r}
+#make numeric
+gendiv.df$gendiv<-as.numeric(gendiv.df$gendiv)
+
+#add subspecies info to data frame
+gendiv.df$subspecies<-c(rep("cali", times=3),rep("obsc", times=6),"hypo",rep("obsc", times=3),rep("cana", times=3),"gris","gris",rep("nev", times=3),"gris","wood")
+
+#add sample type info
+gendiv.df$type<-c(rep("muscle", times=10),rep("toepad", times=8),rep("muscle", times=3),rep("toepad", times=2))
+
+#reorder factors for plotting
+gendiv.df$subspecies <- factor(gendiv.df$subspecies, levels = unique(gendiv.df$subspecies))
+
+#plot
+ggplot(gendiv.df, aes(x = subspecies, y = gendiv*1000, shape=type)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  labs(y = "Heterozygous sites per Kb") +
+  theme_classic()
+
+#replot
+ggplot(gendiv.df, aes(x = subspecies, y = gendiv*1000)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  labs(y = "Heterozygous sites per Kb") +
+  theme_classic()
+
+#save
+plotx<-ggplot(gendiv.df, aes(x = subspecies, y = gendiv*1000)) +
+  geom_half_boxplot(side = "l", outlier.shape = NA, errorbar.draw = FALSE) +
+  geom_half_point(side = "r", transformation = position_jitter(width = 0.05, height = 0)) +
+  labs(y = "Heterozygous sites per Kb") +
+  theme_classic()
+
+#ggsave("~/Desktop/2026.eagle.mountain/gendiv.pdf", plotx, width = 6.5, height = 2, units = "in")
+```
+

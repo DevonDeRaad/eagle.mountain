@@ -1,0 +1,868 @@
+Loading conda/23.11.0
+  Loading requirement: miniforge/23.11.0
+2026-08-28 15:45:09 [pixy] pixy 2.2.3
+2026-08-28 15:45:09 [pixy] See documentation at https://pixy.readthedocs.io/en/latest/
+2026-08-28 15:45:09 [pixy] Validating VCF and input parameters...
+2026-08-28 15:45:09 [pixy] Checking write access...
+2026-08-28 15:45:09 [pixy] Checking CPU configuration...
+2026-08-28 15:45:09 [pixy] Checking for invariant sites...
+2026-08-28 15:45:09 [pixy] Checking chromosome data...
+2026-08-28 15:45:09 [pixy] Checking intervals/sites...
+2026-08-28 15:45:09 [pixy] OK
+2026-08-28 15:45:09 [pixy] Checking sample data...
+2026-08-28 16:01:58 [pixy] Inferred ploidy: 2 (uniform across contigs)
+2026-08-28 16:01:58 [pixy] All initial checks passed!
+2026-08-28 16:01:58 [pixy] Preparing for calculation of summary statistics: pi
+2026-08-28 16:01:58 [pixy] Data set contains 1 populations, 422 chromosome(s), and 1 sample(s)
+2026-08-28 16:01:58 [pixy] Window size: 1000000 bp
+2026-08-28 16:01:58 [pixy] Started calculations!
+2026-08-28 16:01:58 [pixy] Using 1 out of 36 available CPU cores
+2026-08-28 16:01:58 [pixy] Processing chromosome/contig NC_091013.1
+2026-08-28 16:03:29 [pixy] Calculating statistics for region NC_091013.1:1-120744013
+2026-08-28 16:19:15 [pixy] Processing chromosome/contig NC_091014.1
+2026-08-28 16:20:11 [pixy] Calculating statistics for region NC_091014.1:1-80429209
+2026-08-28 16:30:29 [pixy] Processing chromosome/contig NC_091015.1
+2026-08-28 16:32:13 [pixy] Calculating statistics for region NC_091015.1:1-168972849
+2026-08-28 16:52:29 [pixy] Processing chromosome/contig NC_091016.1
+2026-08-28 16:54:08 [pixy] Calculating statistics for region NC_091016.1:1-126181974
+2026-08-28 17:11:30 [pixy] Processing chromosome/contig NC_091017.1
+2026-08-28 17:13:01 [pixy] Calculating statistics for region NC_091017.1:1-79619966
+2026-08-28 17:23:53 [pixy] Processing chromosome/contig NC_091018.1
+2026-08-28 17:24:13 [pixy] Calculating statistics for region NC_091018.1:1-21932043
+2026-08-28 17:27:10 [pixy] Processing chromosome/contig NC_091019.1
+2026-08-28 17:28:03 [pixy] Calculating statistics for region NC_091019.1:1-68048937
+2026-08-28 17:36:59 [pixy] Processing chromosome/contig NC_091020.1
+2026-08-28 17:37:30 [pixy] Calculating statistics for region NC_091020.1:1-37241326
+2026-08-28 17:42:33 [pixy] Processing chromosome/contig NC_091021.1
+2026-08-28 17:43:04 [pixy] Calculating statistics for region NC_091021.1:1-40126672
+2026-08-28 17:48:32 [pixy] Processing chromosome/contig NC_091022.1
+2026-08-28 17:48:57 [pixy] Calculating statistics for region NC_091022.1:1-33344688
+2026-08-28 17:53:27 [pixy] Processing chromosome/contig NC_091023.1
+2026-08-28 17:53:48 [pixy] Calculating statistics for region NC_091023.1:1-27110605
+2026-08-28 17:57:30 [pixy] Processing chromosome/contig NC_091024.1
+2026-08-28 17:57:46 [pixy] Calculating statistics for region NC_091024.1:1-21714759
+2026-08-28 18:00:41 [pixy] Processing chromosome/contig NC_091025.1
+2026-08-28 18:01:08 [pixy] Calculating statistics for region NC_091025.1:1-27485592
+2026-08-28 18:05:01 [pixy] Processing chromosome/contig NC_091026.1
+2026-08-28 18:05:33 [pixy] Calculating statistics for region NC_091026.1:1-23722814
+2026-08-28 18:09:01 [pixy] Processing chromosome/contig NC_091027.1
+2026-08-28 18:09:28 [pixy] Calculating statistics for region NC_091027.1:1-19575649
+2026-08-28 18:12:28 [pixy] Processing chromosome/contig NC_091028.1
+2026-08-28 18:12:46 [pixy] Calculating statistics for region NC_091028.1:1-17276382
+2026-08-28 18:15:28 [pixy] Processing chromosome/contig NC_091029.1
+2026-08-28 18:15:46 [pixy] Calculating statistics for region NC_091029.1:1-15423477
+2026-08-28 18:18:06 [pixy] Processing chromosome/contig NC_091030.1
+2026-08-28 18:18:20 [pixy] Calculating statistics for region NC_091030.1:1-11194216
+2026-08-28 18:20:06 [pixy] Processing chromosome/contig NC_091031.1
+2026-08-28 18:20:19 [pixy] Calculating statistics for region NC_091031.1:1-12646755
+2026-08-28 18:22:13 [pixy] Processing chromosome/contig NC_091032.1
+2026-08-28 18:22:30 [pixy] Calculating statistics for region NC_091032.1:1-11285411
+2026-08-28 18:24:14 [pixy] Processing chromosome/contig NC_091033.1
+2026-08-28 18:24:33 [pixy] Calculating statistics for region NC_091033.1:1-16321399
+2026-08-28 18:27:00 [pixy] Processing chromosome/contig NC_091034.1
+2026-08-28 18:27:08 [pixy] Calculating statistics for region NC_091034.1:1-9152054
+2026-08-28 18:28:31 [pixy] Processing chromosome/contig NC_091035.1
+2026-08-28 18:28:37 [pixy] Calculating statistics for region NC_091035.1:1-5407579
+2026-08-28 18:29:29 [pixy] Processing chromosome/contig NC_091036.1
+2026-08-28 18:29:38 [pixy] Calculating statistics for region NC_091036.1:1-8063014
+2026-08-28 18:30:51 [pixy] Processing chromosome/contig NC_091037.1
+2026-08-28 18:30:58 [pixy] Calculating statistics for region NC_091037.1:1-7108461
+2026-08-28 18:32:07 [pixy] Processing chromosome/contig NC_091038.1
+2026-08-28 18:32:09 [pixy] Calculating statistics for region NC_091038.1:1-4699346
+2026-08-28 18:32:47 [pixy] Processing chromosome/contig NC_091039.1
+2026-08-28 18:32:58 [pixy] Calculating statistics for region NC_091039.1:1-8075776
+2026-08-28 18:34:09 [pixy] Processing chromosome/contig NC_091040.1
+2026-08-28 18:34:18 [pixy] Calculating statistics for region NC_091040.1:1-6775755
+2026-08-28 18:35:17 [pixy] Processing chromosome/contig NC_091041.1
+2026-08-28 18:35:25 [pixy] Calculating statistics for region NC_091041.1:1-6887608
+2026-08-28 18:36:25 [pixy] Processing chromosome/contig NC_091042.1
+2026-08-28 18:36:29 [pixy] Calculating statistics for region NC_091042.1:1-3500446
+2026-08-28 18:37:00 [pixy] Processing chromosome/contig NC_091043.1
+2026-08-28 18:37:02 [pixy] Calculating statistics for region NC_091043.1:1-2306077
+2026-08-28 18:37:22 [pixy] Processing chromosome/contig NC_091044.1
+2026-08-28 18:37:24 [pixy] Calculating statistics for region NC_091044.1:1-2375305
+2026-08-28 18:37:45 [pixy] Processing chromosome/contig NC_091045.1
+2026-08-28 18:37:45 [pixy] Calculating statistics for region NC_091045.1:1-833014
+2026-08-28 18:37:52 [pixy] Processing chromosome/contig NC_138417.1
+2026-08-28 18:38:08 [pixy] Calculating statistics for region NC_138417.1:1-20933488
+2026-08-28 18:40:40 [pixy] Processing chromosome/contig NW_027184081.1
+2026-08-28 18:40:43 [pixy] Calculating statistics for region NW_027184081.1:1-9287813
+2026-08-28 18:41:43 [pixy] Processing chromosome/contig NW_027184082.1
+2026-08-28 18:41:47 [pixy] Calculating statistics for region NW_027184082.1:1-4676084
+2026-08-28 18:42:21 [pixy] Processing chromosome/contig NW_027184083.1
+2026-08-28 18:42:24 [pixy] Calculating statistics for region NW_027184083.1:1-3305301
+2026-08-28 18:42:52 [pixy] Processing chromosome/contig NW_027184084.1
+2026-08-28 18:42:54 [pixy] Calculating statistics for region NW_027184084.1:1-3028097
+2026-08-28 18:43:19 [pixy] Processing chromosome/contig NC_138418.1
+2026-08-28 18:44:15 [pixy] Calculating statistics for region NC_138418.1:1-72300715
+2026-08-28 18:53:30 [pixy] Processing chromosome/contig NW_027184086.1
+2026-08-28 18:53:33 [pixy] Calculating statistics for region NW_027184086.1:1-4023203
+2026-08-28 18:54:09 [pixy] Processing chromosome/contig NW_027184087.1
+2026-08-28 18:54:10 [pixy] Calculating statistics for region NW_027184087.1:1-1512621
+2026-08-28 18:54:23 [pixy] Processing chromosome/contig NW_027184088.1
+2026-08-28 18:54:23 [pixy] Calculating statistics for region NW_027184088.1:1-992519
+2026-08-28 18:54:29 [pixy] Processing chromosome/contig NW_027183733.1
+2026-08-28 18:54:29 [pixy] Calculating statistics for region NW_027183733.1:1-4627896
+2026-08-28 18:54:55 [pixy] Processing chromosome/contig NW_027183804.1
+2026-08-28 18:54:55 [pixy] Calculating statistics for region NW_027183804.1:1-4191205
+2026-08-28 18:55:25 [pixy] Processing chromosome/contig NW_027183894.1
+2026-08-28 18:55:25 [pixy] Calculating statistics for region NW_027183894.1:1-3066752
+2026-08-28 18:55:46 [pixy] Processing chromosome/contig NW_027183905.1
+2026-08-28 18:55:47 [pixy] Calculating statistics for region NW_027183905.1:1-2989967
+2026-08-28 18:56:08 [pixy] Processing chromosome/contig NW_027183916.1
+2026-08-28 18:56:08 [pixy] Calculating statistics for region NW_027183916.1:1-2919628
+2026-08-28 18:56:24 [pixy] Processing chromosome/contig NW_027183927.1
+2026-08-28 18:56:24 [pixy] Calculating statistics for region NW_027183927.1:1-2859259
+2026-08-28 18:56:39 [pixy] Processing chromosome/contig NW_027183938.1
+2026-08-28 18:56:40 [pixy] Calculating statistics for region NW_027183938.1:1-2077684
+2026-08-28 18:56:55 [pixy] Processing chromosome/contig NW_027183949.1
+2026-08-28 18:56:56 [pixy] Calculating statistics for region NW_027183949.1:1-2502540
+2026-08-28 18:57:13 [pixy] Processing chromosome/contig NW_027183960.1
+2026-08-28 18:57:13 [pixy] Calculating statistics for region NW_027183960.1:1-2701768
+2026-08-28 18:57:29 [pixy] Processing chromosome/contig NW_027183981.1
+2026-08-28 18:57:29 [pixy] Calculating statistics for region NW_027183981.1:1-2567317
+2026-08-28 18:57:47 [pixy] Processing chromosome/contig NW_027183992.1
+2026-08-28 18:57:47 [pixy] Calculating statistics for region NW_027183992.1:1-2373406
+2026-08-28 18:58:04 [pixy] Processing chromosome/contig NW_027184003.1
+2026-08-28 18:58:04 [pixy] Calculating statistics for region NW_027184003.1:1-2389473
+2026-08-28 18:58:20 [pixy] Processing chromosome/contig NW_027184024.1
+2026-08-28 18:58:20 [pixy] Calculating statistics for region NW_027184024.1:1-2241817
+2026-08-28 18:58:36 [pixy] Processing chromosome/contig NW_027184055.1
+2026-08-28 18:58:36 [pixy] Calculating statistics for region NW_027184055.1:1-2291840
+2026-08-28 18:58:52 [pixy] Processing chromosome/contig NW_027184058.1
+2026-08-28 18:58:52 [pixy] Calculating statistics for region NW_027184058.1:1-2205497
+2026-08-28 18:59:08 [pixy] Processing chromosome/contig NW_027184059.1
+2026-08-28 18:59:08 [pixy] Calculating statistics for region NW_027184059.1:1-1712622
+2026-08-28 18:59:18 [pixy] Processing chromosome/contig NW_027184060.1
+2026-08-28 18:59:19 [pixy] Calculating statistics for region NW_027184060.1:1-1299198
+2026-08-28 18:59:29 [pixy] Processing chromosome/contig NW_027184061.1
+2026-08-28 18:59:31 [pixy] Calculating statistics for region NW_027184061.1:1-1961095
+2026-08-28 18:59:45 [pixy] Processing chromosome/contig NW_027184062.1
+2026-08-28 18:59:45 [pixy] Calculating statistics for region NW_027184062.1:1-1543116
+2026-08-28 18:59:55 [pixy] Processing chromosome/contig NW_027184063.1
+2026-08-28 18:59:56 [pixy] Calculating statistics for region NW_027184063.1:1-1951477
+2026-08-28 19:00:09 [pixy] Processing chromosome/contig NW_027184064.1
+2026-08-28 19:00:11 [pixy] Calculating statistics for region NW_027184064.1:1-1905516
+2026-08-28 19:00:27 [pixy] Processing chromosome/contig NW_027184065.1
+2026-08-28 19:00:27 [pixy] Calculating statistics for region NW_027184065.1:1-1558390
+2026-08-28 19:00:38 [pixy] Processing chromosome/contig NW_027184066.1
+2026-08-28 19:00:38 [pixy] Calculating statistics for region NW_027184066.1:1-1537917
+2026-08-28 19:00:48 [pixy] Processing chromosome/contig NW_027184067.1
+2026-08-28 19:00:49 [pixy] Calculating statistics for region NW_027184067.1:1-1506749
+2026-08-28 19:00:59 [pixy] Processing chromosome/contig NW_027184068.1
+2026-08-28 19:00:59 [pixy] Calculating statistics for region NW_027184068.1:1-1446750
+2026-08-28 19:01:09 [pixy] Processing chromosome/contig NW_027184069.1
+2026-08-28 19:01:09 [pixy] Calculating statistics for region NW_027184069.1:1-1279097
+2026-08-28 19:01:20 [pixy] Processing chromosome/contig NW_027184070.1
+2026-08-28 19:01:20 [pixy] Calculating statistics for region NW_027184070.1:1-1338766
+2026-08-28 19:01:30 [pixy] Processing chromosome/contig NW_027184071.1
+2026-08-28 19:01:31 [pixy] Calculating statistics for region NW_027184071.1:1-1409186
+2026-08-28 19:01:42 [pixy] Processing chromosome/contig NW_027184072.1
+2026-08-28 19:01:42 [pixy] Calculating statistics for region NW_027184072.1:1-1072367
+2026-08-28 19:01:52 [pixy] Processing chromosome/contig NW_027184073.1
+2026-08-28 19:01:53 [pixy] Calculating statistics for region NW_027184073.1:1-91113
+2026-08-28 19:01:58 [pixy] Processing chromosome/contig NW_027184074.1
+2026-08-28 19:01:58 [pixy] Calculating statistics for region NW_027184074.1:1-1037383
+2026-08-28 19:02:08 [pixy] Processing chromosome/contig NW_027184075.1
+2026-08-28 19:02:08 [pixy] Calculating statistics for region NW_027184075.1:1-1151285
+2026-08-28 19:02:19 [pixy] Processing chromosome/contig NW_027184076.1
+2026-08-28 19:02:19 [pixy] Calculating statistics for region NW_027184076.1:1-1141632
+2026-08-28 19:02:30 [pixy] Processing chromosome/contig NW_027184077.1
+2026-08-28 19:02:30 [pixy] Calculating statistics for region NW_027184077.1:1-1129256
+2026-08-28 19:02:40 [pixy] Processing chromosome/contig NW_027184078.1
+2026-08-28 19:02:41 [pixy] Calculating statistics for region NW_027184078.1:1-1112213
+2026-08-28 19:02:54 [pixy] Processing chromosome/contig NW_027184079.1
+2026-08-28 19:02:54 [pixy] Calculating statistics for region NW_027184079.1:1-1069928
+2026-08-28 19:03:05 [pixy] Processing chromosome/contig NW_027183463.1
+2026-08-28 19:03:05 [pixy] Calculating statistics for region NW_027183463.1:1-1050823
+2026-08-28 19:03:17 [pixy] Processing chromosome/contig NW_027183464.1
+2026-08-28 19:03:17 [pixy] Calculating statistics for region NW_027183464.1:1-935207
+2026-08-28 19:03:22 [pixy] Processing chromosome/contig NW_027183465.1
+2026-08-28 19:03:22 [pixy] Calculating statistics for region NW_027183465.1:1-1032187
+2026-08-28 19:03:32 [pixy] Processing chromosome/contig NW_027183466.1
+2026-08-28 19:03:32 [pixy] Calculating statistics for region NW_027183466.1:1-933866
+2026-08-28 19:03:38 [pixy] Processing chromosome/contig NW_027183467.1
+2026-08-28 19:03:39 [pixy] Calculating statistics for region NW_027183467.1:1-808038
+2026-08-28 19:03:47 [pixy] Processing chromosome/contig NW_027183468.1
+2026-08-28 19:03:47 [pixy] Calculating statistics for region NW_027183468.1:1-981813
+2026-08-28 19:03:52 [pixy] Processing chromosome/contig NW_027183469.1
+2026-08-28 19:03:52 [pixy] Calculating statistics for region NW_027183469.1:1-944666
+2026-08-28 19:03:57 [pixy] Processing chromosome/contig NW_027183470.1
+2026-08-28 19:03:57 [pixy] Calculating statistics for region NW_027183470.1:1-888750
+2026-08-28 19:04:03 [pixy] Processing chromosome/contig NW_027183471.1
+2026-08-28 19:04:03 [pixy] Calculating statistics for region NW_027183471.1:1-930296
+2026-08-28 19:04:08 [pixy] Processing chromosome/contig NW_027183472.1
+2026-08-28 19:04:08 [pixy] Calculating statistics for region NW_027183472.1:1-920292
+2026-08-28 19:04:13 [pixy] Processing chromosome/contig NW_027183473.1
+2026-08-28 19:04:13 [pixy] Calculating statistics for region NW_027183473.1:1-882899
+2026-08-28 19:04:19 [pixy] Processing chromosome/contig NW_027183474.1
+2026-08-28 19:04:19 [pixy] Calculating statistics for region NW_027183474.1:1-862390
+2026-08-28 19:04:24 [pixy] Processing chromosome/contig NW_027183475.1
+2026-08-28 19:04:24 [pixy] Calculating statistics for region NW_027183475.1:1-845229
+2026-08-28 19:04:29 [pixy] Processing chromosome/contig NW_027183476.1
+2026-08-28 19:04:30 [pixy] Calculating statistics for region NW_027183476.1:1-830867
+2026-08-28 19:04:35 [pixy] Processing chromosome/contig NW_027183477.1
+2026-08-28 19:04:35 [pixy] Calculating statistics for region NW_027183477.1:1-565983
+2026-08-28 19:04:41 [pixy] Processing chromosome/contig NW_027183478.1
+2026-08-28 19:04:41 [pixy] Calculating statistics for region NW_027183478.1:1-457351
+2026-08-28 19:04:46 [pixy] Processing chromosome/contig NW_027183479.1
+2026-08-28 19:04:46 [pixy] Calculating statistics for region NW_027183479.1:1-637545
+2026-08-28 19:04:51 [pixy] Processing chromosome/contig NW_027183480.1
+2026-08-28 19:04:52 [pixy] Calculating statistics for region NW_027183480.1:1-753854
+2026-08-28 19:04:57 [pixy] Processing chromosome/contig NW_027183481.1
+2026-08-28 19:04:57 [pixy] Calculating statistics for region NW_027183481.1:1-743620
+2026-08-28 19:05:03 [pixy] Processing chromosome/contig NW_027183482.1
+2026-08-28 19:05:03 [pixy] Calculating statistics for region NW_027183482.1:1-704324
+2026-08-28 19:05:08 [pixy] Processing chromosome/contig NW_027183483.1
+2026-08-28 19:05:08 [pixy] Calculating statistics for region NW_027183483.1:1-676499
+2026-08-28 19:05:13 [pixy] Processing chromosome/contig NW_027183484.1
+2026-08-28 19:05:13 [pixy] Calculating statistics for region NW_027183484.1:1-665550
+2026-08-28 19:05:18 [pixy] Processing chromosome/contig NW_027183485.1
+2026-08-28 19:05:19 [pixy] Calculating statistics for region NW_027183485.1:1-509932
+2026-08-28 19:05:24 [pixy] Processing chromosome/contig NW_027183486.1
+2026-08-28 19:05:24 [pixy] Calculating statistics for region NW_027183486.1:1-646175
+2026-08-28 19:05:29 [pixy] Processing chromosome/contig NW_027183488.1
+2026-08-28 19:05:29 [pixy] Calculating statistics for region NW_027183488.1:1-97931
+2026-08-28 19:05:34 [pixy] Processing chromosome/contig NW_027183489.1
+2026-08-28 19:05:34 [pixy] Calculating statistics for region NW_027183489.1:1-599942
+2026-08-28 19:05:39 [pixy] Processing chromosome/contig NW_027183490.1
+2026-08-28 19:05:40 [pixy] Calculating statistics for region NW_027183490.1:1-610582
+2026-08-28 19:05:45 [pixy] Processing chromosome/contig NW_027183491.1
+2026-08-28 19:05:45 [pixy] Calculating statistics for region NW_027183491.1:1-607890
+2026-08-28 19:05:51 [pixy] Processing chromosome/contig NW_027183492.1
+2026-08-28 19:05:51 [pixy] Calculating statistics for region NW_027183492.1:1-381774
+2026-08-28 19:05:57 [pixy] Processing chromosome/contig NW_027183493.1
+2026-08-28 19:05:57 [pixy] Calculating statistics for region NW_027183493.1:1-560735
+2026-08-28 19:06:03 [pixy] Processing chromosome/contig NW_027183494.1
+2026-08-28 19:06:03 [pixy] Calculating statistics for region NW_027183494.1:1-557032
+2026-08-28 19:06:09 [pixy] Processing chromosome/contig NW_027183495.1
+2026-08-28 19:06:09 [pixy] Calculating statistics for region NW_027183495.1:1-466475
+2026-08-28 19:06:14 [pixy] Processing chromosome/contig NW_027183496.1
+2026-08-28 19:06:14 [pixy] Calculating statistics for region NW_027183496.1:1-518954
+2026-08-28 19:06:20 [pixy] Processing chromosome/contig NW_027183497.1
+2026-08-28 19:06:20 [pixy] Calculating statistics for region NW_027183497.1:1-470763
+2026-08-28 19:06:25 [pixy] Processing chromosome/contig NW_027183498.1
+2026-08-28 19:06:25 [pixy] Calculating statistics for region NW_027183498.1:1-39015
+2026-08-28 19:06:30 [pixy] Processing chromosome/contig NW_027183499.1
+2026-08-28 19:06:30 [pixy] Calculating statistics for region NW_027183499.1:1-500317
+2026-08-28 19:06:35 [pixy] Processing chromosome/contig NW_027183500.1
+2026-08-28 19:06:36 [pixy] Calculating statistics for region NW_027183500.1:1-494153
+2026-08-28 19:06:41 [pixy] Processing chromosome/contig NW_027183501.1
+2026-08-28 19:06:41 [pixy] Calculating statistics for region NW_027183501.1:1-380923
+2026-08-28 19:06:47 [pixy] Processing chromosome/contig NW_027183502.1
+2026-08-28 19:06:47 [pixy] Calculating statistics for region NW_027183502.1:1-463900
+2026-08-28 19:06:52 [pixy] Processing chromosome/contig NW_027183503.1
+2026-08-28 19:06:52 [pixy] Calculating statistics for region NW_027183503.1:1-470726
+2026-08-28 19:06:57 [pixy] Processing chromosome/contig NW_027183504.1
+2026-08-28 19:06:57 [pixy] Calculating statistics for region NW_027183504.1:1-429582
+2026-08-28 19:07:02 [pixy] Processing chromosome/contig NW_027183505.1
+2026-08-28 19:07:02 [pixy] Calculating statistics for region NW_027183505.1:1-55811
+2026-08-28 19:07:07 [pixy] Processing chromosome/contig NW_027183506.1
+2026-08-28 19:07:08 [pixy] Calculating statistics for region NW_027183506.1:1-329947
+2026-08-28 19:07:13 [pixy] Processing chromosome/contig NW_027183507.1
+2026-08-28 19:07:13 [pixy] Calculating statistics for region NW_027183507.1:1-411922
+2026-08-28 19:07:18 [pixy] Processing chromosome/contig NW_027183508.1
+2026-08-28 19:07:18 [pixy] Calculating statistics for region NW_027183508.1:1-442428
+2026-08-28 19:07:23 [pixy] Processing chromosome/contig NW_027183509.1
+2026-08-28 19:07:23 [pixy] Calculating statistics for region NW_027183509.1:1-426616
+2026-08-28 19:07:29 [pixy] Processing chromosome/contig NW_027183510.1
+2026-08-28 19:07:29 [pixy] Calculating statistics for region NW_027183510.1:1-146906
+2026-08-28 19:07:34 [pixy] Processing chromosome/contig NW_027183511.1
+2026-08-28 19:07:34 [pixy] Calculating statistics for region NW_027183511.1:1-324791
+2026-08-28 19:07:39 [pixy] Processing chromosome/contig NW_027183512.1
+2026-08-28 19:07:39 [pixy] Calculating statistics for region NW_027183512.1:1-403263
+2026-08-28 19:07:44 [pixy] Processing chromosome/contig NW_027183513.1
+2026-08-28 19:07:44 [pixy] Calculating statistics for region NW_027183513.1:1-387875
+2026-08-28 19:07:49 [pixy] Processing chromosome/contig NW_027183514.1
+2026-08-28 19:07:49 [pixy] Calculating statistics for region NW_027183514.1:1-371139
+2026-08-28 19:07:55 [pixy] Processing chromosome/contig NW_027183515.1
+2026-08-28 19:07:55 [pixy] Calculating statistics for region NW_027183515.1:1-369456
+2026-08-28 19:08:00 [pixy] Processing chromosome/contig NW_027183516.1
+2026-08-28 19:08:00 [pixy] Calculating statistics for region NW_027183516.1:1-372342
+2026-08-28 19:08:05 [pixy] Processing chromosome/contig NW_027183519.1
+2026-08-28 19:08:05 [pixy] Calculating statistics for region NW_027183519.1:1-171199
+2026-08-28 19:08:11 [pixy] Processing chromosome/contig NW_027183520.1
+2026-08-28 19:08:11 [pixy] Calculating statistics for region NW_027183520.1:1-344995
+2026-08-28 19:08:16 [pixy] Processing chromosome/contig NW_027183521.1
+2026-08-28 19:08:16 [pixy] Calculating statistics for region NW_027183521.1:1-339458
+2026-08-28 19:08:22 [pixy] Processing chromosome/contig NW_027183523.1
+2026-08-28 19:08:22 [pixy] Calculating statistics for region NW_027183523.1:1-338274
+2026-08-28 19:08:27 [pixy] Processing chromosome/contig NW_027183524.1
+2026-08-28 19:08:27 [pixy] Calculating statistics for region NW_027183524.1:1-339619
+2026-08-28 19:08:32 [pixy] Processing chromosome/contig NW_027183525.1
+2026-08-28 19:08:32 [pixy] Calculating statistics for region NW_027183525.1:1-293247
+2026-08-28 19:08:38 [pixy] Processing chromosome/contig NW_027183526.1
+2026-08-28 19:08:38 [pixy] Calculating statistics for region NW_027183526.1:1-320139
+2026-08-28 19:08:43 [pixy] Processing chromosome/contig NW_027183528.1
+2026-08-28 19:08:43 [pixy] Calculating statistics for region NW_027183528.1:1-331111
+2026-08-28 19:08:48 [pixy] Processing chromosome/contig NW_027183529.1
+2026-08-28 19:08:48 [pixy] Calculating statistics for region NW_027183529.1:1-324709
+2026-08-28 19:08:54 [pixy] Processing chromosome/contig NW_027183530.1
+2026-08-28 19:08:54 [pixy] Calculating statistics for region NW_027183530.1:1-328709
+2026-08-28 19:08:59 [pixy] Processing chromosome/contig NW_027183531.1
+2026-08-28 19:09:00 [pixy] Calculating statistics for region NW_027183531.1:1-285948
+2026-08-28 19:09:05 [pixy] Processing chromosome/contig NW_027183532.1
+2026-08-28 19:09:05 [pixy] Calculating statistics for region NW_027183532.1:1-286954
+2026-08-28 19:09:10 [pixy] Processing chromosome/contig NW_027183533.1
+2026-08-28 19:09:10 [pixy] Calculating statistics for region NW_027183533.1:1-203130
+2026-08-28 19:09:15 [pixy] Processing chromosome/contig NW_027183534.1
+2026-08-28 19:09:15 [pixy] Calculating statistics for region NW_027183534.1:1-322875
+2026-08-28 19:09:21 [pixy] Processing chromosome/contig NW_027183535.1
+2026-08-28 19:09:21 [pixy] Calculating statistics for region NW_027183535.1:1-321716
+2026-08-28 19:09:26 [pixy] Processing chromosome/contig NW_027183536.1
+2026-08-28 19:09:27 [pixy] Calculating statistics for region NW_027183536.1:1-314082
+2026-08-28 19:09:32 [pixy] Processing chromosome/contig NW_027183537.1
+2026-08-28 19:09:32 [pixy] Calculating statistics for region NW_027183537.1:1-244860
+2026-08-28 19:09:38 [pixy] Processing chromosome/contig NW_027183538.1
+2026-08-28 19:09:38 [pixy] Calculating statistics for region NW_027183538.1:1-286754
+2026-08-28 19:09:43 [pixy] Processing chromosome/contig NW_027183539.1
+2026-08-28 19:09:43 [pixy] Calculating statistics for region NW_027183539.1:1-304154
+2026-08-28 19:09:48 [pixy] Processing chromosome/contig NW_027183540.1
+2026-08-28 19:09:48 [pixy] Calculating statistics for region NW_027183540.1:1-303958
+2026-08-28 19:09:53 [pixy] Processing chromosome/contig NW_027183541.1
+2026-08-28 19:09:53 [pixy] Calculating statistics for region NW_027183541.1:1-299127
+2026-08-28 19:09:59 [pixy] Processing chromosome/contig NW_027183542.1
+2026-08-28 19:09:59 [pixy] Calculating statistics for region NW_027183542.1:1-49229
+2026-08-28 19:10:04 [pixy] Processing chromosome/contig NW_027183543.1
+2026-08-28 19:10:04 [pixy] Calculating statistics for region NW_027183543.1:1-61209
+2026-08-28 19:10:10 [pixy] Processing chromosome/contig NW_027183544.1
+2026-08-28 19:10:10 [pixy] Calculating statistics for region NW_027183544.1:1-258545
+2026-08-28 19:10:15 [pixy] Processing chromosome/contig NW_027183546.1
+2026-08-28 19:10:15 [pixy] Calculating statistics for region NW_027183546.1:1-118506
+2026-08-28 19:10:20 [pixy] Processing chromosome/contig NW_027183547.1
+2026-08-28 19:10:20 [pixy] Calculating statistics for region NW_027183547.1:1-272353
+2026-08-28 19:10:25 [pixy] Processing chromosome/contig NW_027183548.1
+2026-08-28 19:10:25 [pixy] Calculating statistics for region NW_027183548.1:1-217871
+2026-08-28 19:10:30 [pixy] Processing chromosome/contig NW_027183549.1
+2026-08-28 19:10:30 [pixy] Calculating statistics for region NW_027183549.1:1-278194
+2026-08-28 19:10:35 [pixy] Processing chromosome/contig NW_027183550.1
+2026-08-28 19:10:36 [pixy] Calculating statistics for region NW_027183550.1:1-274772
+2026-08-28 19:10:41 [pixy] Processing chromosome/contig NW_027183551.1
+2026-08-28 19:10:41 [pixy] Calculating statistics for region NW_027183551.1:1-269534
+2026-08-28 19:10:47 [pixy] Processing chromosome/contig NW_027183553.1
+2026-08-28 19:10:47 [pixy] Calculating statistics for region NW_027183553.1:1-268166
+2026-08-28 19:10:52 [pixy] Processing chromosome/contig NW_027183554.1
+2026-08-28 19:10:52 [pixy] Calculating statistics for region NW_027183554.1:1-31888
+2026-08-28 19:10:57 [pixy] Processing chromosome/contig NW_027183555.1
+2026-08-28 19:10:57 [pixy] Calculating statistics for region NW_027183555.1:1-228943
+2026-08-28 19:11:03 [pixy] Processing chromosome/contig NW_027183556.1
+2026-08-28 19:11:03 [pixy] Calculating statistics for region NW_027183556.1:1-242093
+2026-08-28 19:11:08 [pixy] Processing chromosome/contig NW_027183557.1
+2026-08-28 19:11:08 [pixy] Calculating statistics for region NW_027183557.1:1-252416
+2026-08-28 19:11:13 [pixy] Processing chromosome/contig NW_027183558.1
+2026-08-28 19:11:14 [pixy] Calculating statistics for region NW_027183558.1:1-241059
+2026-08-28 19:11:19 [pixy] Processing chromosome/contig NW_027183559.1
+2026-08-28 19:11:19 [pixy] Calculating statistics for region NW_027183559.1:1-69321
+2026-08-28 19:11:24 [pixy] Processing chromosome/contig NW_027183560.1
+2026-08-28 19:11:24 [pixy] Calculating statistics for region NW_027183560.1:1-234320
+2026-08-28 19:11:29 [pixy] Processing chromosome/contig NW_027183561.1
+2026-08-28 19:11:29 [pixy] Calculating statistics for region NW_027183561.1:1-124510
+2026-08-28 19:11:34 [pixy] Processing chromosome/contig NW_027183562.1
+2026-08-28 19:11:34 [pixy] Calculating statistics for region NW_027183562.1:1-247217
+2026-08-28 19:11:40 [pixy] Processing chromosome/contig NW_027183563.1
+2026-08-28 19:11:40 [pixy] Calculating statistics for region NW_027183563.1:1-245114
+2026-08-28 19:11:45 [pixy] Processing chromosome/contig NW_027183565.1
+2026-08-28 19:11:45 [pixy] Calculating statistics for region NW_027183565.1:1-208899
+2026-08-28 19:11:50 [pixy] Processing chromosome/contig NW_027183566.1
+2026-08-28 19:11:50 [pixy] Calculating statistics for region NW_027183566.1:1-213000
+2026-08-28 19:11:55 [pixy] Processing chromosome/contig NW_027183567.1
+2026-08-28 19:11:56 [pixy] Calculating statistics for region NW_027183567.1:1-229146
+2026-08-28 19:12:01 [pixy] Processing chromosome/contig NW_027183568.1
+2026-08-28 19:12:01 [pixy] Calculating statistics for region NW_027183568.1:1-219426
+2026-08-28 19:12:06 [pixy] Processing chromosome/contig NW_027183569.1
+2026-08-28 19:12:06 [pixy] Calculating statistics for region NW_027183569.1:1-201534
+2026-08-28 19:12:12 [pixy] Processing chromosome/contig NW_027183570.1
+2026-08-28 19:12:12 [pixy] Calculating statistics for region NW_027183570.1:1-221292
+2026-08-28 19:12:17 [pixy] Processing chromosome/contig NW_027183571.1
+2026-08-28 19:12:17 [pixy] Calculating statistics for region NW_027183571.1:1-208979
+2026-08-28 19:12:22 [pixy] Processing chromosome/contig NW_027183572.1
+2026-08-28 19:12:22 [pixy] Calculating statistics for region NW_027183572.1:1-222729
+2026-08-28 19:12:27 [pixy] Processing chromosome/contig NW_027183573.1
+2026-08-28 19:12:28 [pixy] Calculating statistics for region NW_027183573.1:1-35862
+2026-08-28 19:12:33 [pixy] Processing chromosome/contig NW_027183574.1
+2026-08-28 19:12:33 [pixy] Calculating statistics for region NW_027183574.1:1-221278
+2026-08-28 19:12:38 [pixy] Processing chromosome/contig NW_027183575.1
+2026-08-28 19:12:38 [pixy] Calculating statistics for region NW_027183575.1:1-217741
+2026-08-28 19:12:43 [pixy] Processing chromosome/contig NW_027183576.1
+2026-08-28 19:12:43 [pixy] Calculating statistics for region NW_027183576.1:1-199418
+2026-08-28 19:12:48 [pixy] Processing chromosome/contig NW_027183577.1
+2026-08-28 19:12:49 [pixy] Calculating statistics for region NW_027183577.1:1-217868
+2026-08-28 19:12:54 [pixy] Processing chromosome/contig NW_027183578.1
+2026-08-28 19:12:54 [pixy] Calculating statistics for region NW_027183578.1:1-154203
+2026-08-28 19:12:59 [pixy] Processing chromosome/contig NW_027183579.1
+2026-08-28 19:12:59 [pixy] Calculating statistics for region NW_027183579.1:1-208929
+2026-08-28 19:13:04 [pixy] Processing chromosome/contig NW_027183580.1
+2026-08-28 19:13:04 [pixy] Calculating statistics for region NW_027183580.1:1-210251
+2026-08-28 19:13:10 [pixy] Processing chromosome/contig NW_027183581.1
+2026-08-28 19:13:10 [pixy] Calculating statistics for region NW_027183581.1:1-184764
+2026-08-28 19:13:15 [pixy] Processing chromosome/contig NW_027183583.1
+2026-08-28 19:13:15 [pixy] Calculating statistics for region NW_027183583.1:1-205338
+2026-08-28 19:13:20 [pixy] Processing chromosome/contig NW_027183584.1
+2026-08-28 19:13:20 [pixy] Calculating statistics for region NW_027183584.1:1-122503
+2026-08-28 19:13:25 [pixy] Processing chromosome/contig NW_027183585.1
+2026-08-28 19:13:25 [pixy] Calculating statistics for region NW_027183585.1:1-204572
+2026-08-28 19:13:30 [pixy] Processing chromosome/contig NW_027183586.1
+2026-08-28 19:13:30 [pixy] Calculating statistics for region NW_027183586.1:1-177408
+2026-08-28 19:13:36 [pixy] Processing chromosome/contig NW_027183587.1
+2026-08-28 19:13:36 [pixy] Calculating statistics for region NW_027183587.1:1-190594
+2026-08-28 19:13:41 [pixy] Processing chromosome/contig NW_027183589.1
+2026-08-28 19:13:41 [pixy] Calculating statistics for region NW_027183589.1:1-203778
+2026-08-28 19:13:46 [pixy] Processing chromosome/contig NW_027183590.1
+2026-08-28 19:13:46 [pixy] Calculating statistics for region NW_027183590.1:1-157486
+2026-08-28 19:13:51 [pixy] Processing chromosome/contig NW_027183591.1
+2026-08-28 19:13:51 [pixy] Calculating statistics for region NW_027183591.1:1-153470
+2026-08-28 19:13:57 [pixy] Processing chromosome/contig NW_027183592.1
+2026-08-28 19:13:57 [pixy] Calculating statistics for region NW_027183592.1:1-178371
+2026-08-28 19:14:02 [pixy] Processing chromosome/contig NW_027183593.1
+2026-08-28 19:14:02 [pixy] Calculating statistics for region NW_027183593.1:1-194405
+2026-08-28 19:14:07 [pixy] Processing chromosome/contig NW_027183595.1
+2026-08-28 19:14:07 [pixy] Calculating statistics for region NW_027183595.1:1-193526
+2026-08-28 19:14:12 [pixy] Processing chromosome/contig NW_027183596.1
+2026-08-28 19:14:12 [pixy] Calculating statistics for region NW_027183596.1:1-187206
+2026-08-28 19:14:18 [pixy] Processing chromosome/contig NW_027183597.1
+2026-08-28 19:14:18 [pixy] Calculating statistics for region NW_027183597.1:1-113351
+2026-08-28 19:14:23 [pixy] Processing chromosome/contig NW_027183598.1
+2026-08-28 19:14:23 [pixy] Calculating statistics for region NW_027183598.1:1-63604
+2026-08-28 19:14:28 [pixy] Processing chromosome/contig NW_027183599.1
+2026-08-28 19:14:28 [pixy] Calculating statistics for region NW_027183599.1:1-157171
+2026-08-28 19:14:33 [pixy] Processing chromosome/contig NW_027183600.1
+2026-08-28 19:14:33 [pixy] Calculating statistics for region NW_027183600.1:1-187284
+2026-08-28 19:14:38 [pixy] Processing chromosome/contig NW_027183601.1
+2026-08-28 19:14:38 [pixy] Calculating statistics for region NW_027183601.1:1-144971
+2026-08-28 19:14:44 [pixy] Processing chromosome/contig NW_027183603.1
+2026-08-28 19:14:44 [pixy] Calculating statistics for region NW_027183603.1:1-182332
+2026-08-28 19:14:49 [pixy] Processing chromosome/contig NW_027183604.1
+2026-08-28 19:14:49 [pixy] Calculating statistics for region NW_027183604.1:1-129029
+2026-08-28 19:14:54 [pixy] Processing chromosome/contig NW_027183608.1
+2026-08-28 19:14:54 [pixy] Calculating statistics for region NW_027183608.1:1-147860
+2026-08-28 19:14:59 [pixy] Processing chromosome/contig NW_027183609.1
+2026-08-28 19:14:59 [pixy] Calculating statistics for region NW_027183609.1:1-178112
+2026-08-28 19:15:04 [pixy] Processing chromosome/contig NW_027183612.1
+2026-08-28 19:15:05 [pixy] Calculating statistics for region NW_027183612.1:1-141661
+2026-08-28 19:15:10 [pixy] Processing chromosome/contig NW_027183613.1
+2026-08-28 19:15:10 [pixy] Calculating statistics for region NW_027183613.1:1-173105
+2026-08-28 19:15:15 [pixy] Processing chromosome/contig NW_027183615.1
+2026-08-28 19:15:15 [pixy] Calculating statistics for region NW_027183615.1:1-166946
+2026-08-28 19:15:20 [pixy] Processing chromosome/contig NW_027183616.1
+2026-08-28 19:15:20 [pixy] Calculating statistics for region NW_027183616.1:1-172543
+2026-08-28 19:15:26 [pixy] Processing chromosome/contig NW_027183617.1
+2026-08-28 19:15:26 [pixy] Calculating statistics for region NW_027183617.1:1-162623
+2026-08-28 19:15:31 [pixy] Processing chromosome/contig NW_027183618.1
+2026-08-28 19:15:31 [pixy] Calculating statistics for region NW_027183618.1:1-149197
+2026-08-28 19:15:36 [pixy] Processing chromosome/contig NW_027183619.1
+2026-08-28 19:15:36 [pixy] Calculating statistics for region NW_027183619.1:1-154665
+2026-08-28 19:15:41 [pixy] Processing chromosome/contig NW_027183620.1
+2026-08-28 19:15:41 [pixy] Calculating statistics for region NW_027183620.1:1-39488
+2026-08-28 19:15:47 [pixy] Processing chromosome/contig NW_027183623.1
+2026-08-28 19:15:47 [pixy] Calculating statistics for region NW_027183623.1:1-154471
+2026-08-28 19:15:52 [pixy] Processing chromosome/contig NW_027183624.1
+2026-08-28 19:15:52 [pixy] Calculating statistics for region NW_027183624.1:1-158903
+2026-08-28 19:15:57 [pixy] Processing chromosome/contig NW_027183626.1
+2026-08-28 19:15:57 [pixy] Calculating statistics for region NW_027183626.1:1-76876
+2026-08-28 19:16:02 [pixy] Processing chromosome/contig NW_027183627.1
+2026-08-28 19:16:02 [pixy] Calculating statistics for region NW_027183627.1:1-153397
+2026-08-28 19:16:08 [pixy] Processing chromosome/contig NW_027183628.1
+2026-08-28 19:16:08 [pixy] Calculating statistics for region NW_027183628.1:1-151507
+2026-08-28 19:16:13 [pixy] Processing chromosome/contig NW_027183631.1
+2026-08-28 19:16:13 [pixy] Calculating statistics for region NW_027183631.1:1-133329
+2026-08-28 19:16:18 [pixy] Processing chromosome/contig NW_027183633.1
+2026-08-28 19:16:18 [pixy] Calculating statistics for region NW_027183633.1:1-144470
+2026-08-28 19:16:23 [pixy] Processing chromosome/contig NW_027183634.1
+2026-08-28 19:16:23 [pixy] Calculating statistics for region NW_027183634.1:1-90967
+2026-08-28 19:16:28 [pixy] Processing chromosome/contig NW_027183635.1
+2026-08-28 19:16:29 [pixy] Calculating statistics for region NW_027183635.1:1-148539
+2026-08-28 19:16:34 [pixy] Processing chromosome/contig NW_027183636.1
+2026-08-28 19:16:34 [pixy] Calculating statistics for region NW_027183636.1:1-150252
+2026-08-28 19:16:39 [pixy] Processing chromosome/contig NW_027183637.1
+2026-08-28 19:16:39 [pixy] Calculating statistics for region NW_027183637.1:1-149686
+2026-08-28 19:16:44 [pixy] Processing chromosome/contig NW_027183639.1
+2026-08-28 19:16:44 [pixy] Calculating statistics for region NW_027183639.1:1-120578
+2026-08-28 19:16:49 [pixy] Processing chromosome/contig NW_027183641.1
+2026-08-28 19:16:49 [pixy] Calculating statistics for region NW_027183641.1:1-120926
+2026-08-28 19:16:55 [pixy] Processing chromosome/contig NW_027183642.1
+2026-08-28 19:16:55 [pixy] Calculating statistics for region NW_027183642.1:1-141552
+2026-08-28 19:17:00 [pixy] Processing chromosome/contig NW_027183645.1
+2026-08-28 19:17:00 [pixy] Calculating statistics for region NW_027183645.1:1-139881
+2026-08-28 19:17:05 [pixy] Processing chromosome/contig NW_027183646.1
+2026-08-28 19:17:05 [pixy] Calculating statistics for region NW_027183646.1:1-103943
+2026-08-28 19:17:10 [pixy] Processing chromosome/contig NW_027183648.1
+2026-08-28 19:17:11 [pixy] Calculating statistics for region NW_027183648.1:1-139232
+2026-08-28 19:17:16 [pixy] Processing chromosome/contig NW_027183649.1
+2026-08-28 19:17:16 [pixy] Calculating statistics for region NW_027183649.1:1-131359
+2026-08-28 19:17:21 [pixy] Processing chromosome/contig NW_027183650.1
+2026-08-28 19:17:21 [pixy] Calculating statistics for region NW_027183650.1:1-118914
+2026-08-28 19:17:26 [pixy] Processing chromosome/contig NW_027183651.1
+2026-08-28 19:17:26 [pixy] Calculating statistics for region NW_027183651.1:1-110750
+2026-08-28 19:17:32 [pixy] Processing chromosome/contig NW_027183653.1
+2026-08-28 19:17:32 [pixy] Calculating statistics for region NW_027183653.1:1-130742
+2026-08-28 19:17:37 [pixy] Processing chromosome/contig NW_027183654.1
+2026-08-28 19:17:37 [pixy] Calculating statistics for region NW_027183654.1:1-131247
+2026-08-28 19:17:42 [pixy] Processing chromosome/contig NW_027183655.1
+2026-08-28 19:17:42 [pixy] Calculating statistics for region NW_027183655.1:1-67564
+2026-08-28 19:17:47 [pixy] Processing chromosome/contig NW_027183656.1
+2026-08-28 19:17:47 [pixy] Calculating statistics for region NW_027183656.1:1-31265
+2026-08-28 19:17:53 [pixy] Processing chromosome/contig NW_027183657.1
+2026-08-28 19:17:53 [pixy] Calculating statistics for region NW_027183657.1:1-112059
+2026-08-28 19:17:58 [pixy] Processing chromosome/contig NW_027183658.1
+2026-08-28 19:17:58 [pixy] Calculating statistics for region NW_027183658.1:1-129993
+2026-08-28 19:18:03 [pixy] Processing chromosome/contig NW_027183660.1
+2026-08-28 19:18:03 [pixy] Calculating statistics for region NW_027183660.1:1-98276
+2026-08-28 19:18:09 [pixy] Processing chromosome/contig NW_027183661.1
+2026-08-28 19:18:09 [pixy] Calculating statistics for region NW_027183661.1:1-118258
+2026-08-28 19:18:14 [pixy] Processing chromosome/contig NW_027183664.1
+2026-08-28 19:18:14 [pixy] Calculating statistics for region NW_027183664.1:1-126559
+2026-08-28 19:18:19 [pixy] Processing chromosome/contig NW_027183665.1
+2026-08-28 19:18:19 [pixy] Calculating statistics for region NW_027183665.1:1-61120
+2026-08-28 19:18:24 [pixy] Processing chromosome/contig NW_027183666.1
+2026-08-28 19:18:24 [pixy] Calculating statistics for region NW_027183666.1:1-118857
+2026-08-28 19:18:29 [pixy] Processing chromosome/contig NW_027183667.1
+2026-08-28 19:18:29 [pixy] Calculating statistics for region NW_027183667.1:1-89271
+2026-08-28 19:18:35 [pixy] Processing chromosome/contig NW_027183669.1
+2026-08-28 19:18:35 [pixy] Calculating statistics for region NW_027183669.1:1-121901
+2026-08-28 19:18:40 [pixy] Processing chromosome/contig NW_027183670.1
+2026-08-28 19:18:40 [pixy] Calculating statistics for region NW_027183670.1:1-63157
+2026-08-28 19:18:45 [pixy] Processing chromosome/contig NW_027183672.1
+2026-08-28 19:18:45 [pixy] Calculating statistics for region NW_027183672.1:1-119704
+2026-08-28 19:18:50 [pixy] Processing chromosome/contig NW_027183674.1
+2026-08-28 19:18:50 [pixy] Calculating statistics for region NW_027183674.1:1-118017
+2026-08-28 19:18:55 [pixy] Processing chromosome/contig NW_027183675.1
+2026-08-28 19:18:55 [pixy] Calculating statistics for region NW_027183675.1:1-115960
+2026-08-28 19:19:01 [pixy] Processing chromosome/contig NW_027183676.1
+2026-08-28 19:19:01 [pixy] Calculating statistics for region NW_027183676.1:1-116536
+2026-08-28 19:19:06 [pixy] Processing chromosome/contig NW_027183678.1
+2026-08-28 19:19:06 [pixy] Calculating statistics for region NW_027183678.1:1-115000
+2026-08-28 19:19:11 [pixy] Processing chromosome/contig NW_027183679.1
+2026-08-28 19:19:11 [pixy] Calculating statistics for region NW_027183679.1:1-114576
+2026-08-28 19:19:16 [pixy] Processing chromosome/contig NW_027183681.1
+2026-08-28 19:19:16 [pixy] Calculating statistics for region NW_027183681.1:1-91928
+2026-08-28 19:19:21 [pixy] Processing chromosome/contig NW_027183682.1
+2026-08-28 19:19:22 [pixy] Calculating statistics for region NW_027183682.1:1-97775
+2026-08-28 19:19:27 [pixy] Processing chromosome/contig NW_027183683.1
+2026-08-28 19:19:27 [pixy] Calculating statistics for region NW_027183683.1:1-113426
+2026-08-28 19:19:32 [pixy] Processing chromosome/contig NW_027183685.1
+2026-08-28 19:19:32 [pixy] Calculating statistics for region NW_027183685.1:1-36101
+2026-08-28 19:19:37 [pixy] Processing chromosome/contig NW_027183686.1
+2026-08-28 19:19:37 [pixy] Calculating statistics for region NW_027183686.1:1-112270
+2026-08-28 19:19:42 [pixy] Processing chromosome/contig NW_027183687.1
+2026-08-28 19:19:42 [pixy] Calculating statistics for region NW_027183687.1:1-46605
+2026-08-28 19:19:47 [pixy] Processing chromosome/contig NW_027183688.1
+2026-08-28 19:19:48 [pixy] Calculating statistics for region NW_027183688.1:1-111415
+2026-08-28 19:19:53 [pixy] Processing chromosome/contig NW_027183690.1
+2026-08-28 19:19:53 [pixy] Calculating statistics for region NW_027183690.1:1-109289
+2026-08-28 19:19:58 [pixy] Processing chromosome/contig NW_027183691.1
+2026-08-28 19:19:58 [pixy] Calculating statistics for region NW_027183691.1:1-109628
+2026-08-28 19:20:03 [pixy] Processing chromosome/contig NW_027183692.1
+2026-08-28 19:20:03 [pixy] Calculating statistics for region NW_027183692.1:1-81523
+2026-08-28 19:20:08 [pixy] Processing chromosome/contig NW_027183694.1
+2026-08-28 19:20:09 [pixy] Calculating statistics for region NW_027183694.1:1-53844
+2026-08-28 19:20:14 [pixy] Processing chromosome/contig NW_027183695.1
+2026-08-28 19:20:14 [pixy] Calculating statistics for region NW_027183695.1:1-105397
+2026-08-28 19:20:19 [pixy] Processing chromosome/contig NW_027183696.1
+2026-08-28 19:20:19 [pixy] Calculating statistics for region NW_027183696.1:1-48315
+2026-08-28 19:20:24 [pixy] Processing chromosome/contig NW_027183700.1
+2026-08-28 19:20:24 [pixy] Calculating statistics for region NW_027183700.1:1-87983
+2026-08-28 19:20:29 [pixy] Processing chromosome/contig NW_027183703.1
+2026-08-28 19:20:29 [pixy] Calculating statistics for region NW_027183703.1:1-96849
+2026-08-28 19:20:35 [pixy] Processing chromosome/contig NW_027183704.1
+2026-08-28 19:20:35 [pixy] Calculating statistics for region NW_027183704.1:1-93166
+2026-08-28 19:20:40 [pixy] Processing chromosome/contig NW_027183706.1
+2026-08-28 19:20:40 [pixy] Calculating statistics for region NW_027183706.1:1-99315
+2026-08-28 19:20:45 [pixy] Processing chromosome/contig NW_027183708.1
+2026-08-28 19:20:45 [pixy] Calculating statistics for region NW_027183708.1:1-95223
+2026-08-28 19:20:50 [pixy] Processing chromosome/contig NW_027183709.1
+2026-08-28 19:20:50 [pixy] Calculating statistics for region NW_027183709.1:1-64972
+2026-08-28 19:20:56 [pixy] Processing chromosome/contig NW_027183710.1
+2026-08-28 19:20:56 [pixy] Calculating statistics for region NW_027183710.1:1-91618
+2026-08-28 19:21:01 [pixy] Processing chromosome/contig NW_027183712.1
+2026-08-28 19:21:01 [pixy] Calculating statistics for region NW_027183712.1:1-13948
+2026-08-28 19:21:06 [pixy] Processing chromosome/contig NW_027183713.1
+2026-08-28 19:21:06 [pixy] Calculating statistics for region NW_027183713.1:1-90018
+2026-08-28 19:21:11 [pixy] Processing chromosome/contig NW_027183715.1
+2026-08-28 19:21:11 [pixy] Calculating statistics for region NW_027183715.1:1-80761
+2026-08-28 19:21:16 [pixy] Processing chromosome/contig NW_027183716.1
+2026-08-28 19:21:16 [pixy] Calculating statistics for region NW_027183716.1:1-43546
+2026-08-28 19:21:22 [pixy] Processing chromosome/contig NW_027183717.1
+2026-08-28 19:21:22 [pixy] Calculating statistics for region NW_027183717.1:1-90758
+2026-08-28 19:21:27 [pixy] Processing chromosome/contig NW_027183718.1
+2026-08-28 19:21:27 [pixy] Calculating statistics for region NW_027183718.1:1-88837
+2026-08-28 19:21:32 [pixy] Processing chromosome/contig NW_027183719.1
+2026-08-28 19:21:32 [pixy] Calculating statistics for region NW_027183719.1:1-91526
+2026-08-28 19:21:37 [pixy] Processing chromosome/contig NW_027183720.1
+2026-08-28 19:21:38 [pixy] Calculating statistics for region NW_027183720.1:1-91244
+2026-08-28 19:21:43 [pixy] Processing chromosome/contig NW_027183721.1
+2026-08-28 19:21:43 [pixy] Calculating statistics for region NW_027183721.1:1-58212
+2026-08-28 19:21:48 [pixy] Processing chromosome/contig NW_027183722.1
+2026-08-28 19:21:48 [pixy] Calculating statistics for region NW_027183722.1:1-91132
+2026-08-28 19:21:53 [pixy] Processing chromosome/contig NW_027183724.1
+2026-08-28 19:21:53 [pixy] Calculating statistics for region NW_027183724.1:1-85519
+2026-08-28 19:21:58 [pixy] Processing chromosome/contig NW_027183725.1
+2026-08-28 19:21:58 [pixy] Calculating statistics for region NW_027183725.1:1-47387
+2026-08-28 19:22:03 [pixy] Processing chromosome/contig NW_027183727.1
+2026-08-28 19:22:03 [pixy] Calculating statistics for region NW_027183727.1:1-86288
+2026-08-28 19:22:09 [pixy] Processing chromosome/contig NW_027183728.1
+2026-08-28 19:22:09 [pixy] Calculating statistics for region NW_027183728.1:1-90165
+2026-08-28 19:22:14 [pixy] Processing chromosome/contig NW_027183729.1
+2026-08-28 19:22:14 [pixy] Calculating statistics for region NW_027183729.1:1-88886
+2026-08-28 19:22:19 [pixy] Processing chromosome/contig NW_027183730.1
+2026-08-28 19:22:19 [pixy] Calculating statistics for region NW_027183730.1:1-82307
+2026-08-28 19:22:24 [pixy] Processing chromosome/contig NW_027183732.1
+2026-08-28 19:22:24 [pixy] Calculating statistics for region NW_027183732.1:1-55908
+2026-08-28 19:22:29 [pixy] Processing chromosome/contig NW_027183734.1
+2026-08-28 19:22:30 [pixy] Calculating statistics for region NW_027183734.1:1-86137
+2026-08-28 19:22:35 [pixy] Processing chromosome/contig NW_027183735.1
+2026-08-28 19:22:35 [pixy] Calculating statistics for region NW_027183735.1:1-81265
+2026-08-28 19:22:40 [pixy] Processing chromosome/contig NW_027183736.1
+2026-08-28 19:22:40 [pixy] Calculating statistics for region NW_027183736.1:1-87000
+2026-08-28 19:22:45 [pixy] Processing chromosome/contig NW_027183740.1
+2026-08-28 19:22:45 [pixy] Calculating statistics for region NW_027183740.1:1-82444
+2026-08-28 19:22:50 [pixy] Processing chromosome/contig NW_027183742.1
+2026-08-28 19:22:50 [pixy] Calculating statistics for region NW_027183742.1:1-80929
+2026-08-28 19:22:56 [pixy] Processing chromosome/contig NW_027183743.1
+2026-08-28 19:22:56 [pixy] Calculating statistics for region NW_027183743.1:1-24870
+2026-08-28 19:23:01 [pixy] Processing chromosome/contig NW_027183744.1
+2026-08-28 19:23:01 [pixy] Calculating statistics for region NW_027183744.1:1-79887
+2026-08-28 19:23:06 [pixy] Processing chromosome/contig NW_027183745.1
+2026-08-28 19:23:06 [pixy] Calculating statistics for region NW_027183745.1:1-42822
+2026-08-28 19:23:11 [pixy] Processing chromosome/contig NW_027183747.1
+2026-08-28 19:23:11 [pixy] Calculating statistics for region NW_027183747.1:1-66348
+2026-08-28 19:23:16 [pixy] Processing chromosome/contig NW_027183748.1
+2026-08-28 19:23:17 [pixy] Calculating statistics for region NW_027183748.1:1-27904
+2026-08-28 19:23:22 [pixy] Processing chromosome/contig NW_027183753.1
+2026-08-28 19:23:22 [pixy] Calculating statistics for region NW_027183753.1:1-1168
+2026-08-28 19:23:27 [pixy] Processing chromosome/contig NW_027183754.1
+2026-08-28 19:23:27 [pixy] Calculating statistics for region NW_027183754.1:1-40697
+2026-08-28 19:23:32 [pixy] Processing chromosome/contig NW_027183756.1
+2026-08-28 19:23:32 [pixy] Calculating statistics for region NW_027183756.1:1-71686
+2026-08-28 19:23:37 [pixy] Processing chromosome/contig NW_027183759.1
+2026-08-28 19:23:37 [pixy] Calculating statistics for region NW_027183759.1:1-77018
+2026-08-28 19:23:42 [pixy] Processing chromosome/contig NW_027183761.1
+2026-08-28 19:23:43 [pixy] Calculating statistics for region NW_027183761.1:1-71012
+2026-08-28 19:23:48 [pixy] Processing chromosome/contig NW_027183765.1
+2026-08-28 19:23:48 [pixy] Calculating statistics for region NW_027183765.1:1-22024
+2026-08-28 19:23:53 [pixy] Processing chromosome/contig NW_027183767.1
+2026-08-28 19:23:53 [pixy] Calculating statistics for region NW_027183767.1:1-54430
+2026-08-28 19:23:58 [pixy] Processing chromosome/contig NW_027183768.1
+2026-08-28 19:23:58 [pixy] Calculating statistics for region NW_027183768.1:1-42088
+2026-08-28 19:24:03 [pixy] Processing chromosome/contig NW_027183769.1
+2026-08-28 19:24:03 [pixy] Calculating statistics for region NW_027183769.1:1-50029
+2026-08-28 19:24:08 [pixy] Processing chromosome/contig NW_027183770.1
+2026-08-28 19:24:08 [pixy] Calculating statistics for region NW_027183770.1:1-37293
+2026-08-28 19:24:14 [pixy] Processing chromosome/contig NW_027183775.1
+2026-08-28 19:24:14 [pixy] Calculating statistics for region NW_027183775.1:1-72109
+2026-08-28 19:24:19 [pixy] Processing chromosome/contig NW_027183777.1
+2026-08-28 19:24:19 [pixy] Calculating statistics for region NW_027183777.1:1-66547
+2026-08-28 19:24:24 [pixy] Processing chromosome/contig NW_027183780.1
+2026-08-28 19:24:24 [pixy] Calculating statistics for region NW_027183780.1:1-57940
+2026-08-28 19:24:29 [pixy] Processing chromosome/contig NW_027183781.1
+2026-08-28 19:24:29 [pixy] Calculating statistics for region NW_027183781.1:1-60302
+2026-08-28 19:24:35 [pixy] Processing chromosome/contig NW_027183785.1
+2026-08-28 19:24:35 [pixy] Calculating statistics for region NW_027183785.1:1-66540
+2026-08-28 19:24:40 [pixy] Processing chromosome/contig NW_027183786.1
+2026-08-28 19:24:40 [pixy] Calculating statistics for region NW_027183786.1:1-63587
+2026-08-28 19:24:45 [pixy] Processing chromosome/contig NW_027183790.1
+2026-08-28 19:24:45 [pixy] Calculating statistics for region NW_027183790.1:1-47021
+2026-08-28 19:24:50 [pixy] Processing chromosome/contig NW_027183796.1
+2026-08-28 19:24:50 [pixy] Calculating statistics for region NW_027183796.1:1-61941
+2026-08-28 19:24:56 [pixy] Processing chromosome/contig NW_027183797.1
+2026-08-28 19:24:56 [pixy] Calculating statistics for region NW_027183797.1:1-60773
+2026-08-28 19:25:01 [pixy] Processing chromosome/contig NW_027183803.1
+2026-08-28 19:25:01 [pixy] Calculating statistics for region NW_027183803.1:1-59742
+2026-08-28 19:25:06 [pixy] Processing chromosome/contig NW_027183806.1
+2026-08-28 19:25:06 [pixy] Calculating statistics for region NW_027183806.1:1-10641
+2026-08-28 19:25:11 [pixy] Processing chromosome/contig NW_027183807.1
+2026-08-28 19:25:11 [pixy] Calculating statistics for region NW_027183807.1:1-36516
+2026-08-28 19:25:16 [pixy] Processing chromosome/contig NW_027183809.1
+2026-08-28 19:25:16 [pixy] Calculating statistics for region NW_027183809.1:1-20759
+2026-08-28 19:25:22 [pixy] Processing chromosome/contig NW_027183811.1
+2026-08-28 19:25:22 [pixy] Calculating statistics for region NW_027183811.1:1-12431
+2026-08-28 19:25:27 [pixy] Processing chromosome/contig NW_027183813.1
+2026-08-28 19:25:27 [pixy] Calculating statistics for region NW_027183813.1:1-56825
+2026-08-28 19:25:32 [pixy] Processing chromosome/contig NW_027183815.1
+2026-08-28 19:25:32 [pixy] Calculating statistics for region NW_027183815.1:1-57389
+2026-08-28 19:25:37 [pixy] Processing chromosome/contig NW_027183816.1
+2026-08-28 19:25:37 [pixy] Calculating statistics for region NW_027183816.1:1-55263
+2026-08-28 19:25:43 [pixy] Processing chromosome/contig NW_027183818.1
+2026-08-28 19:25:43 [pixy] Calculating statistics for region NW_027183818.1:1-53730
+2026-08-28 19:25:48 [pixy] Processing chromosome/contig NW_027183819.1
+2026-08-28 19:25:48 [pixy] Calculating statistics for region NW_027183819.1:1-48874
+2026-08-28 19:25:53 [pixy] Processing chromosome/contig NW_027183821.1
+2026-08-28 19:25:53 [pixy] Calculating statistics for region NW_027183821.1:1-54450
+2026-08-28 19:25:58 [pixy] Processing chromosome/contig NW_027183822.1
+2026-08-28 19:25:58 [pixy] Calculating statistics for region NW_027183822.1:1-37851
+2026-08-28 19:26:03 [pixy] Processing chromosome/contig NW_027183823.1
+2026-08-28 19:26:04 [pixy] Calculating statistics for region NW_027183823.1:1-55698
+2026-08-28 19:26:09 [pixy] Processing chromosome/contig NW_027183829.1
+2026-08-28 19:26:09 [pixy] Calculating statistics for region NW_027183829.1:1-40532
+2026-08-28 19:26:14 [pixy] Processing chromosome/contig NW_027183830.1
+2026-08-28 19:26:14 [pixy] Calculating statistics for region NW_027183830.1:1-49283
+2026-08-28 19:26:19 [pixy] Processing chromosome/contig NW_027183831.1
+2026-08-28 19:26:19 [pixy] Calculating statistics for region NW_027183831.1:1-53800
+2026-08-28 19:26:24 [pixy] Processing chromosome/contig NW_027183832.1
+2026-08-28 19:26:24 [pixy] Calculating statistics for region NW_027183832.1:1-21968
+2026-08-28 19:26:29 [pixy] Processing chromosome/contig NW_027183836.1
+2026-08-28 19:26:30 [pixy] Calculating statistics for region NW_027183836.1:1-52533
+2026-08-28 19:26:35 [pixy] Processing chromosome/contig NW_027183837.1
+2026-08-28 19:26:35 [pixy] Calculating statistics for region NW_027183837.1:1-42915
+2026-08-28 19:26:40 [pixy] Processing chromosome/contig NW_027183838.1
+2026-08-28 19:26:40 [pixy] Calculating statistics for region NW_027183838.1:1-37913
+2026-08-28 19:26:45 [pixy] Processing chromosome/contig NW_027183843.1
+2026-08-28 19:26:45 [pixy] Calculating statistics for region NW_027183843.1:1-32595
+2026-08-28 19:26:50 [pixy] Processing chromosome/contig NW_027183845.1
+2026-08-28 19:26:50 [pixy] Calculating statistics for region NW_027183845.1:1-50661
+2026-08-28 19:26:56 [pixy] Processing chromosome/contig NW_027183846.1
+2026-08-28 19:26:56 [pixy] Calculating statistics for region NW_027183846.1:1-41057
+2026-08-28 19:27:01 [pixy] Processing chromosome/contig NW_027183847.1
+2026-08-28 19:27:01 [pixy] Calculating statistics for region NW_027183847.1:1-8921
+2026-08-28 19:27:06 [pixy] Processing chromosome/contig NW_027183851.1
+2026-08-28 19:27:06 [pixy] Calculating statistics for region NW_027183851.1:1-36124
+2026-08-28 19:27:11 [pixy] Processing chromosome/contig NW_027183852.1
+2026-08-28 19:27:11 [pixy] Calculating statistics for region NW_027183852.1:1-49575
+2026-08-28 19:27:17 [pixy] Processing chromosome/contig NW_027183853.1
+2026-08-28 19:27:17 [pixy] Calculating statistics for region NW_027183853.1:1-9316
+2026-08-28 19:27:22 [pixy] Processing chromosome/contig NW_027183861.1
+2026-08-28 19:27:22 [pixy] Calculating statistics for region NW_027183861.1:1-27518
+2026-08-28 19:27:27 [pixy] Processing chromosome/contig NW_027183872.1
+2026-08-28 19:27:27 [pixy] Calculating statistics for region NW_027183872.1:1-42194
+2026-08-28 19:27:32 [pixy] Processing chromosome/contig NW_027183873.1
+2026-08-28 19:27:32 [pixy] Calculating statistics for region NW_027183873.1:1-40280
+2026-08-28 19:27:37 [pixy] Processing chromosome/contig NW_027183875.1
+2026-08-28 19:27:37 [pixy] Calculating statistics for region NW_027183875.1:1-41958
+2026-08-28 19:27:43 [pixy] Processing chromosome/contig NW_027183880.1
+2026-08-28 19:27:43 [pixy] Calculating statistics for region NW_027183880.1:1-40995
+2026-08-28 19:27:48 [pixy] Processing chromosome/contig NW_027183881.1
+2026-08-28 19:27:48 [pixy] Calculating statistics for region NW_027183881.1:1-41557
+2026-08-28 19:27:53 [pixy] Processing chromosome/contig NW_027183883.1
+2026-08-28 19:27:53 [pixy] Calculating statistics for region NW_027183883.1:1-37826
+2026-08-28 19:27:58 [pixy] Processing chromosome/contig NW_027183892.1
+2026-08-28 19:27:58 [pixy] Calculating statistics for region NW_027183892.1:1-40243
+2026-08-28 19:28:04 [pixy] Processing chromosome/contig NW_027183893.1
+2026-08-28 19:28:04 [pixy] Calculating statistics for region NW_027183893.1:1-41376
+2026-08-28 19:28:09 [pixy] Processing chromosome/contig NW_027183896.1
+2026-08-28 19:28:09 [pixy] Calculating statistics for region NW_027183896.1:1-41046
+2026-08-28 19:28:14 [pixy] Processing chromosome/contig NW_027183897.1
+2026-08-28 19:28:14 [pixy] Calculating statistics for region NW_027183897.1:1-40721
+2026-08-28 19:28:19 [pixy] Processing chromosome/contig NW_027183906.1
+2026-08-28 19:28:19 [pixy] Calculating statistics for region NW_027183906.1:1-14989
+2026-08-28 19:28:25 [pixy] Processing chromosome/contig NW_027183908.1
+2026-08-28 19:28:25 [pixy] Calculating statistics for region NW_027183908.1:1-39878
+2026-08-28 19:28:30 [pixy] Processing chromosome/contig NW_027183912.1
+2026-08-28 19:28:30 [pixy] Calculating statistics for region NW_027183912.1:1-37767
+2026-08-28 19:28:35 [pixy] Processing chromosome/contig NW_027183918.1
+2026-08-28 19:28:35 [pixy] Calculating statistics for region NW_027183918.1:1-17393
+2026-08-28 19:28:40 [pixy] Processing chromosome/contig NW_027183921.1
+2026-08-28 19:28:40 [pixy] Calculating statistics for region NW_027183921.1:1-8931
+2026-08-28 19:28:45 [pixy] Processing chromosome/contig NW_027183924.1
+2026-08-28 19:28:45 [pixy] Calculating statistics for region NW_027183924.1:1-37809
+2026-08-28 19:28:51 [pixy] Processing chromosome/contig NW_027183925.1
+2026-08-28 19:28:51 [pixy] Calculating statistics for region NW_027183925.1:1-26909
+2026-08-28 19:28:56 [pixy] Processing chromosome/contig NW_027183929.1
+2026-08-28 19:28:56 [pixy] Calculating statistics for region NW_027183929.1:1-37536
+2026-08-28 19:29:01 [pixy] Processing chromosome/contig NW_027183930.1
+2026-08-28 19:29:01 [pixy] Calculating statistics for region NW_027183930.1:1-30839
+2026-08-28 19:29:06 [pixy] Processing chromosome/contig NW_027183932.1
+2026-08-28 19:29:06 [pixy] Calculating statistics for region NW_027183932.1:1-36044
+2026-08-28 19:29:11 [pixy] Processing chromosome/contig NW_027183942.1
+2026-08-28 19:29:11 [pixy] Calculating statistics for region NW_027183942.1:1-30725
+2026-08-28 19:29:17 [pixy] Processing chromosome/contig NW_027183945.1
+2026-08-28 19:29:17 [pixy] Calculating statistics for region NW_027183945.1:1-18191
+2026-08-28 19:29:22 [pixy] Processing chromosome/contig NW_027183946.1
+2026-08-28 19:29:22 [pixy] Calculating statistics for region NW_027183946.1:1-34233
+2026-08-28 19:29:27 [pixy] Processing chromosome/contig NW_027183955.1
+2026-08-28 19:29:27 [pixy] Calculating statistics for region NW_027183955.1:1-32306
+2026-08-28 19:29:32 [pixy] Processing chromosome/contig NW_027183956.1
+2026-08-28 19:29:32 [pixy] Calculating statistics for region NW_027183956.1:1-25871
+2026-08-28 19:29:38 [pixy] Processing chromosome/contig NW_027183957.1
+2026-08-28 19:29:38 [pixy] Calculating statistics for region NW_027183957.1:1-9730
+2026-08-28 19:29:43 [pixy] Processing chromosome/contig NW_027183958.1
+2026-08-28 19:29:43 [pixy] Calculating statistics for region NW_027183958.1:1-32248
+2026-08-28 19:29:48 [pixy] Processing chromosome/contig NW_027183961.1
+2026-08-28 19:29:48 [pixy] Calculating statistics for region NW_027183961.1:1-28196
+2026-08-28 19:29:53 [pixy] Processing chromosome/contig NW_027183963.1
+2026-08-28 19:29:53 [pixy] Calculating statistics for region NW_027183963.1:1-21773
+2026-08-28 19:29:58 [pixy] Processing chromosome/contig NW_027183967.1
+2026-08-28 19:29:58 [pixy] Calculating statistics for region NW_027183967.1:1-27023
+2026-08-28 19:30:04 [pixy] Processing chromosome/contig NW_027183969.1
+2026-08-28 19:30:04 [pixy] Calculating statistics for region NW_027183969.1:1-23736
+2026-08-28 19:30:09 [pixy] Processing chromosome/contig NW_027183971.1
+2026-08-28 19:30:09 [pixy] Calculating statistics for region NW_027183971.1:1-21368
+2026-08-28 19:30:14 [pixy] Processing chromosome/contig NW_027183974.1
+2026-08-28 19:30:14 [pixy] Calculating statistics for region NW_027183974.1:1-17485
+2026-08-28 19:30:19 [pixy] Processing chromosome/contig NW_027183975.1
+2026-08-28 19:30:19 [pixy] Calculating statistics for region NW_027183975.1:1-28131
+2026-08-28 19:30:24 [pixy] Processing chromosome/contig NW_027183976.1
+2026-08-28 19:30:24 [pixy] Calculating statistics for region NW_027183976.1:1-18139
+2026-08-28 19:30:30 [pixy] Processing chromosome/contig NW_027183977.1
+2026-08-28 19:30:30 [pixy] Calculating statistics for region NW_027183977.1:1-22344
+2026-08-28 19:30:35 [pixy] Processing chromosome/contig NW_027183980.1
+2026-08-28 19:30:35 [pixy] Calculating statistics for region NW_027183980.1:1-24449
+2026-08-28 19:30:40 [pixy] Processing chromosome/contig NW_027183982.1
+2026-08-28 19:30:40 [pixy] Calculating statistics for region NW_027183982.1:1-10910
+2026-08-28 19:30:45 [pixy] Processing chromosome/contig NW_027183983.1
+2026-08-28 19:30:45 [pixy] Calculating statistics for region NW_027183983.1:1-18803
+2026-08-28 19:30:50 [pixy] Processing chromosome/contig NW_027183985.1
+2026-08-28 19:30:50 [pixy] Calculating statistics for region NW_027183985.1:1-18014
+2026-08-28 19:30:55 [pixy] Processing chromosome/contig NW_027183987.1
+2026-08-28 19:30:56 [pixy] Calculating statistics for region NW_027183987.1:1-27214
+2026-08-28 19:31:01 [pixy] Processing chromosome/contig NW_027183991.1
+2026-08-28 19:31:01 [pixy] Calculating statistics for region NW_027183991.1:1-15618
+2026-08-28 19:31:06 [pixy] Processing chromosome/contig NW_027183995.1
+2026-08-28 19:31:06 [pixy] Calculating statistics for region NW_027183995.1:1-27704
+2026-08-28 19:31:11 [pixy] Processing chromosome/contig NW_027183999.1
+2026-08-28 19:31:11 [pixy] Calculating statistics for region NW_027183999.1:1-24419
+2026-08-28 19:31:16 [pixy] Processing chromosome/contig NW_027184007.1
+2026-08-28 19:31:17 [pixy] Calculating statistics for region NW_027184007.1:1-22645
+2026-08-28 19:31:22 [pixy] Processing chromosome/contig NW_027184010.1
+2026-08-28 19:31:22 [pixy] Calculating statistics for region NW_027184010.1:1-21444
+2026-08-28 19:31:27 [pixy] Processing chromosome/contig NW_027184011.1
+2026-08-28 19:31:27 [pixy] Calculating statistics for region NW_027184011.1:1-25659
+2026-08-28 19:31:32 [pixy] Processing chromosome/contig NW_027184012.1
+2026-08-28 19:31:32 [pixy] Calculating statistics for region NW_027184012.1:1-24933
+2026-08-28 19:31:37 [pixy] Processing chromosome/contig NW_027184014.1
+2026-08-28 19:31:37 [pixy] Calculating statistics for region NW_027184014.1:1-25472
+2026-08-28 19:31:43 [pixy] Processing chromosome/contig NW_027184015.1
+2026-08-28 19:31:43 [pixy] Calculating statistics for region NW_027184015.1:1-22646
+2026-08-28 19:31:48 [pixy] Processing chromosome/contig NW_027184016.1
+2026-08-28 19:31:48 [pixy] Calculating statistics for region NW_027184016.1:1-20892
+2026-08-28 19:31:53 [pixy] Processing chromosome/contig NW_027184019.1
+2026-08-28 19:31:53 [pixy] Calculating statistics for region NW_027184019.1:1-23649
+2026-08-28 19:31:58 [pixy] Processing chromosome/contig NW_027184020.1
+2026-08-28 19:31:58 [pixy] Calculating statistics for region NW_027184020.1:1-22419
+2026-08-28 19:32:03 [pixy] Processing chromosome/contig NW_027184021.1
+2026-08-28 19:32:03 [pixy] Calculating statistics for region NW_027184021.1:1-20770
+2026-08-28 19:32:09 [pixy] Processing chromosome/contig NW_027184022.1
+2026-08-28 19:32:09 [pixy] Calculating statistics for region NW_027184022.1:1-24795
+2026-08-28 19:32:14 [pixy] Processing chromosome/contig NW_027184025.1
+2026-08-28 19:32:14 [pixy] Calculating statistics for region NW_027184025.1:1-23668
+2026-08-28 19:32:19 [pixy] Processing chromosome/contig NW_027184026.1
+2026-08-28 19:32:19 [pixy] Calculating statistics for region NW_027184026.1:1-23838
+2026-08-28 19:32:24 [pixy] Processing chromosome/contig NW_027184028.1
+2026-08-28 19:32:24 [pixy] Calculating statistics for region NW_027184028.1:1-21878
+2026-08-28 19:32:30 [pixy] Processing chromosome/contig NW_027184030.1
+2026-08-28 19:32:30 [pixy] Calculating statistics for region NW_027184030.1:1-22722
+2026-08-28 19:32:35 [pixy] Processing chromosome/contig NW_027184033.1
+2026-08-28 19:32:35 [pixy] Calculating statistics for region NW_027184033.1:1-11897
+2026-08-28 19:32:40 [pixy] Processing chromosome/contig NW_027184036.1
+2026-08-28 19:32:40 [pixy] Calculating statistics for region NW_027184036.1:1-22872
+2026-08-28 19:32:45 [pixy] Processing chromosome/contig NW_027184040.1
+2026-08-28 19:32:45 [pixy] Calculating statistics for region NW_027184040.1:1-15524
+2026-08-28 19:32:50 [pixy] Processing chromosome/contig NW_027184042.1
+2026-08-28 19:32:50 [pixy] Calculating statistics for region NW_027184042.1:1-20036
+2026-08-28 19:32:56 [pixy] Processing chromosome/contig NW_027184043.1
+2026-08-28 19:32:56 [pixy] Calculating statistics for region NW_027184043.1:1-18087
+2026-08-28 19:33:01 [pixy] Processing chromosome/contig NW_027184044.1
+2026-08-28 19:33:01 [pixy] Calculating statistics for region NW_027184044.1:1-20946
+2026-08-28 19:33:06 [pixy] Processing chromosome/contig NW_027184048.1
+2026-08-28 19:33:06 [pixy] Calculating statistics for region NW_027184048.1:1-16146
+2026-08-28 19:33:11 [pixy] Processing chromosome/contig NW_027184050.1
+2026-08-28 19:33:11 [pixy] Calculating statistics for region NW_027184050.1:1-16668
+2026-08-28 19:33:16 [pixy] Processing chromosome/contig NW_027184051.1
+2026-08-28 19:33:17 [pixy] Calculating statistics for region NW_027184051.1:1-11619
+2026-08-28 19:33:22 [pixy] Processing chromosome/contig NW_027184054.1
+2026-08-28 19:33:22 [pixy] Calculating statistics for region NW_027184054.1:1-1036
+2026-08-28 19:33:27 [pixy] Processing chromosome/contig NC_051467.1
+2026-08-28 19:33:27 [pixy] Calculating statistics for region NC_051467.1:1-16804
+2026-08-28 19:33:33 [pixy] All calculations complete!
+2026-08-28 19:33:33 [pixy] Time elapsed: 03:31:34
+2026-08-28 19:33:33 [pixy] Output files written to /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/main.text/pixy
+2026-08-28 19:33:33 [pixy] NOTE: There are pixy temp files in /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/main.text/pixy.If these are not actively being used (e.g. by another running pixy process), they can be safely deleted.
+2026-08-28 19:33:33 [pixy] If you use pixy in your research, please cite the following paper: Korunes, KL and K Samuk. pixy: Unbiased estimation of nucleotide diversity and divergence in the presence of missing data. Mol Ecol Resour. 2021 Jan 16. doi: 10.1111/1755-0998.13326.
