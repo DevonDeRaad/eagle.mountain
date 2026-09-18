@@ -1,6 +1,10 @@
-xGen™ ssDNA & Low-Input DNA Library Preparation Kit Protocol For Historical DNA
+# xGen™ ssDNA & Low-Input DNA Library Preparation Kit Protocol For Historical DNA
 
-This protocol takes degraded historical DNA to finished whole genome libraries using a special kit for low input of single stranded DNA. DNA after extraction is fragmented to 70-120bp by the passage of time. First, fragments are singularized (if not already single stranded) and a single stubby adapter is ligated to the i7 end of the fragment. These adapters are stubby because they do not contain all the flowcell binding sequence, just the sequencing read primers. The stubby adapter can then act as a primer to extend a complimentary fragment. The full flowcell binding sequence, and unique dual indexing sequences are added on in the index addition by PCR step. Unique dual indexing sequences allow one to tell different samples apart when all the libraries are combined for sequencing.
+### Usage info:
+This protocol takes degraded historical DNA to finished whole genome libraries using a special kit for low input of single stranded DNA. For avian museum specimens, there is no fragmentation step, because DNA extracted from historical sample toepads has already been fragmented to 70-120bp, via the passage of time while the museum skins are preserved at room temperature. 
+
+### Protocol overview:
+First, fragments are singularized (if not already single stranded) and a single stubby adapter is ligated to the i7 end of each fragment. These adapters are stubby because they do not contain all the flowcell binding sequence, just the sequencing read primers. The stubby adapter can then act as a primer to extend a complimentary fragment. The full flowcell binding sequence, and unique dual indexing sequences are added on during the 'index addition by PCR' step. Unique dual indexing sequences allow the investigator to demultiplex the reads from each unique sample, after each of the pooled libraries have been combined and run on a single lane of a flow cell for DNA sequencing.
 
 [Set up and Planning 2](#_Toc240551027)
 
