@@ -1,0 +1,138 @@
+---
+title: "calculate the number of private alleles present in each subspecies"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Read in vcf and load packages
+```{r}
+#| output: false
+#load packages
+library(vcfR)
+library(adegenet)
+library(StAMPP)
+library(ggplot2)
+library(SNPfiltR)
+```
+
+### Calculate number of private alleles in each subspecies
+```{r, eval=FALSE}
+#read in the vcf
+v<-read.vcfR("~/Downloads/filtered.miss90.mac1.vcf.gz")
+
+#remove the duplicate individual and remove all invariant sites
+v<-v[,colnames(v@gt) != "Aph_woodhouseii_B-303"]
+#remove invariant SNPs
+v<-min_mac(v, min.mac = 1)
+
+#get vcf info:
+v
+
+#23 samples
+#198 CHROMs
+#22,478,215 variants
+#Object size: 10714.5 Mb
+
+#isolate the genotypes as a table:
+x<-extract.gt(v)
+colnames(x)
+#convert table to numeric values
+table(x)
+x[x=="0/0"]<-0
+x[x=="0/1"]<-1
+x[x=="1/1"]<-2
+table(x)
+
+#make a dataframe that includes subspecies ID for each bird
+df<-data.frame(ID=colnames(x),
+               subspecies=c(rep("cali", times=3),rep("obsc", times=6),"hypo",rep("obsc", times=3),rep("cana", times=3),"gris","gris",rep("nev", times=3),"gris","wood"))
+
+#loop to calculate the number of private alleles for each subspecies
+for (j in unique(df$subspecies)){
+  #open empty vector
+  priv<-c()
+  #for loop over every site, testing if the allele is present only in this subspecies
+  for (i in 1:nrow(x)){
+  priv[i]<-sum(as.numeric(x[i,df$subspecies==j]), na.rm = T) > 0 & sum(as.numeric(x[i,df$subspecies!=j]), na.rm = T) == 0 | sum(as.numeric(x[i,df$subspecies!=j]), na.rm = T) == sum(!is.na(x[i,df$subspecies!=j]))*2 & sum(as.numeric(x[i,df$subspecies==j]), na.rm = T) / sum(!is.na(x[i,df$subspecies==j]))*2 < 1
+  }
+  #how many sites were diagnostic to this subspecies?
+  print(j)
+  print(table(priv))
+}
+
+#test this worked correctly
+y<-x[priv==TRUE,]
+y[1:5,]
+```
+
+
+### Calculate number of fixed alleles in each subspecies
+```{r, eval=FALSE}
+#loop to calculate the number of diagnostic alleles for each subspecies
+for (j in unique(df$subspecies)){
+  #open empty vector
+  priv<-c()
+  #for loop over every site, testing if the allele is diagnostic for this subspecies
+  for (i in 1:nrow(x)){
+    priv[i]<-sum(as.numeric(x[i,df$subspecies==j]), na.rm = T) == sum(!is.na(x[i,df$subspecies==j]))*2 & sum(as.numeric(x[i,df$subspecies!=j]), na.rm = T) == 0 | sum(as.numeric(x[i,df$subspecies!=j]), na.rm = T) == sum(!is.na(x[i,df$subspecies!=j]))*2 &
+sum(as.numeric(x[i,df$subspecies==j]), na.rm = T) == 0
+  }
+  #how many sites were diagnostic to this subspecies?
+  print(j)
+  print(table(priv))
+}
+
+#test this worked correctly
+y<-x[priv==TRUE,]
+y[1:5,]
+
+```
+
+### make a barplot displaying the number of private and fixed SNPs present in each species
+```{r}
+#make a dataframe that includes subspecies ID for each bird
+#df<-data.frame(ID=colnames(x),
+#               subspecies=c(rep("cali", times=3),rep("obsc", times=6),"hypo",rep("obsc", times=3),rep("cana", times=3),"gris","gris",rep("nev", times=3),"gris","wood"))
+
+#make a dataframe that includes subspecies ID for each bird
+df<-data.frame(ID=c("Aph_californica_193641", "Aph_californica_195411", "Aph_californica_333971", "Aph_californica_334039",
+                    "Aph_californica_334041", "Aph_californica_342022", "Aph_californica_342053", "Aph_californica_342054",
+                    "Aph_californica_342072", "Aph_californica_343436",  "Aph_californica_56723",  "Aph_californica_65019",
+                     "Aph_californica_65020",  "Aph_californica_93535",  "Aph_californica_94204",  "Aph_californica_94205",
+                     "Aph_woodhouseii_19203",  "Aph_woodhouseii_27904", "Aph_woodhouseii_334080", "Aph_woodhouseii_334081",
+                    "Aph_woodhouseii_334096",  "Aph_woodhouseii_50478",  "Aph_woodhouseii_68851"),
+               subspecies=c(rep("cali", times=3),rep("obsc", times=6),"hypo",rep("obsc", times=3),
+                            rep("cana", times=3),"gris","gris",rep("nev", times=3),"gris","wood"))
+
+#make df for plotting
+plot.df<-data.frame(subspecies=c(unique(df$subspecies),unique(df$subspecies)),
+                    allele.type=c(rep("private",times=7),rep("diagnostic",times=7)),
+                    allele.count=c(1370464,4343308,685044,922721,2043173,1568199,456708,7,0,56905,152,543,196,15094))
+
+#reorder factors for plotting
+plot.df$subspecies <- factor(plot.df$subspecies, levels = unique(df$subspecies))
+#plot
+ggplot(plot.df, aes(x = subspecies, y = allele.count, fill = allele.type)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("private" = "gray60", "diagnostic" = "black")) +
+  labs(y = "Count") +
+  geom_text(aes(label=allele.count), vjust=-0.5) +
+  theme_classic()
+
+#replot clean
+ggplot(plot.df, aes(x = subspecies, y = allele.count, fill = allele.type)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("private" = "gray60", "diagnostic" = "black")) +
+  labs(y = "Count") +
+  geom_text(aes(label=allele.count), vjust=-0.5) +
+  scale_y_log10(breaks = c(10,100,1000,10000,100000,1000000,10000000)) +
+  theme_classic() +
+  theme(legend.position = "none") 
+```
+
