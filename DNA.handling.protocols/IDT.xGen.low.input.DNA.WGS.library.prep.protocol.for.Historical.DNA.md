@@ -1,9 +1,9 @@
 # xGen™ ssDNA & Low-Input DNA Library Preparation Kit Protocol For Historical DNA
 
-### Usage info:
+## Usage info:
 This protocol takes degraded historical DNA to finished whole genome libraries using a special kit for low input of single stranded DNA. For avian museum specimens, there is no fragmentation step, because DNA extracted from historical sample toepads has already been fragmented to 70-120bp, via the passage of time while the museum skins are preserved at room temperature. 
 
-### Protocol overview:
+## Protocol overview:
 First, fragments are singularized (if not already single stranded) and a single stubby adapter is ligated to the i7 end of each fragment. These adapters are stubby because they do not contain all the flowcell binding sequence, just the sequencing read primers. The stubby adapter can then act as a primer to extend a complimentary fragment. The full flowcell binding sequence, and unique dual indexing sequences are added on during the 'index addition by PCR' step. Unique dual indexing sequences allow the investigator to demultiplex the reads from each unique sample, after each of the pooled libraries have been combined and run on a single lane of a flow cell for DNA sequencing.
 
 [Set up and Planning 2](#_Toc240551027)
@@ -58,25 +58,25 @@ First, fragments are singularized (if not already single stranded) and a single 
 
 ## Starting DNA quantity and fragment size
 
-The amount of DNA that this kit can handle is between 10pg to 250ng. Because this kit is for use with historical DNA samples, the input may be necessarily low, however you should always try to maximize the input to the best of your abilities. Having greater input requires fewer PCR cycles later on and that helps reduce PCR bias.
+The amount of input DNA that this kit can handle is between 10pg to 250ng. Because this kit is for use with historical DNA samples, the input may be unavoidably low, however you should always try to maximize the input to the best of your abilities. Greater input amounts require fewer PCR cycles later on, which helps reduce PCR bias. Additionally, greater input values reduce the likelihood of significant exogenous/environmental contamination from small amounts of ambient DNA.
 
 **Note that the input volume for the kit is 15ul of DNA and the samples must be in Low ETDA TE buffer**. Samples must be eluted from their final bead clean prior to library prep with Low EDTA TE buffer. If you have samples ready for prep but are in the wrong buffer, they must be buffer exchanged using beads. It is not advised to dry down the samples in the vacuum centrifuge because this does not remove any of the salts/chemicals from the original buffer. 
 
-Historical DNA is highly fragmented and degraded. You will not need to sonicate to shear DNA for use with this kit. This kit expects DNA pieces to be on average either 200bp or 350bp. This is not possible with our historic DNA samples, where the average fragment size is between 70 and 120bp usually.
+Historical DNA is highly fragmented and degraded. You will not need to sonicate to shear DNA for use with this kit. This kit expects DNA pieces to be on average either 200bp or 350bp. This is not possible with our historic DNA samples, where typical fragment size profiles range between 70 - 120bp.
 
-So, historical DNA samples probably **do not** need to be sonicated for library prep. But you should look at some of your extracted DNA to be sure. However, if you are using modern DNA with this kit you will need to sonicate it to either an average size of 350bp or 200bp. **This protocol is currently written with specifications for DNA ~100bp long historical DNA.** There are different specifications for DNA at 200 or 350bp. You will have to go to the IDT kit protocol to revise this protocol.
+So, historical DNA samples probably do not need to be sonicated for library prep. But you should look at some of your extracted DNA to be sure. However, if you are using modern DNA with this kit you will need to sonicate it to either an average size of 350bp or 200bp. **This protocol is currently written with specifications for DNA ~100bp long historical DNA.** There are different specifications for DNA at 200 or 350bp. *If you want to use this kit for 200 or 350bp fragments, you will have to go to the IDT kit protocol to revise this protocol.*
 
 ## Preparing samples and sample organization
 
 ### Index planning
 
-Before you start, you will want to assign an index pair to each one of your samples. Indexes are sets of 8-10 nucleotides that are added to each sample (individual) that are used to bioinformatically separate out the samples post sequencing. Before sequencing, all sample libraries get combined into one tube, so you will need to tell them apart molecularly. **It is very important to only ever assign 1 set of indexes to only 1 sample**, otherwise you will not be able to use the sample after sequencing.
+Before you start, you will want to assign an index pair to each one of your samples. Indexes are sets of 8-10 nucleotides that are added to each sample (individual) that are used to bioinformatically separate out the reads from each sample post-sequencing (i.e., demultiplexing). Before sequencing, all sample libraries get combined into one tube, so you will need to tell them apart molecularly. **It is very important that two samples that will be combined never receive the same set of indexes**, otherwise you will not be able to differentiate reads from these two samples, rendering the data useless.
 
-For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, NovaSeq X/X Plus, NextSeq 1000/2000, iSeq 100, HiSeq 3000/4000/X) unique dual indexes (UDIs) are required. And it can be best practice to exclusively use UDIs when doing library prep. UDIs add two different sets of 8-10 nucleotides to each side of the piece of DNA, so that each sample gets two different unique sets of 8-10 nucleotides. Assign 1 well position/primer name to each sample uniquely.
+For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, NovaSeq X/X Plus, NextSeq 1000/2000, iSeq 100, HiSeq 3000/4000/X) unique dual indexes (UDIs) are required. And it can be best practice to exclusively use UDIs when doing library prep. UDIs add two different sets of 8-10 nucleotides to each side of the piece of DNA, so that each sample gets two different unique sets of 8-10 nucleotides. Be sure to assign 1 unique well position/primer name to each sample.
 
 ### Preparing samples and aliquoting before prep
 
-**Always dilute your samples with low EDTA TE buffer**. Make sure to vortex and spin down samples after thawing, and keep them on ice while diluting and thawing. Dilute each sample to the desired input amount in low EDTA TE buffer to 15ul in strip tubes. Freeze these aliquots in -20 to be used on the day of library prep if not handling that day.
+**Always dilute your samples with low EDTA TE buffer**. Make sure to vortex (gently, or flick mix) and spin down samples after thawing, and keep them on ice while diluting and thawing. Dilute each sample to the desired input amount in low EDTA TE buffer to 15ul in strip tubes. Freeze these aliquots in the -20 freezer if not handling that day, to be pulled out and gently thawed once you're ready to start library prep.
 
 #
 
@@ -94,7 +94,7 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
    4. Enzyme G4
    5. Enzyme G5
    6. Enzyme G6
-5. Vortex to mix and spin down all reagents a-f above and place back on ice
+5. Vortex (gently, or flick mix) to mix and spin down all reagents a-f above and place back on ice
 6. Prepare Adaptatse Master Mix in a 1.5mL tube on ice. Each component already includes 5% extra to account for error during pipetting. Add components in order to the tube. Note that "n" is the number of samples you are preparing:
    1. 12.075ul Low EDTA TE \* n =
    2. 4.2ul Buffer G1 \* n =
@@ -103,8 +103,8 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
    5. 1.05ul Enzyme G4 \* n =
    6. 1.05ul Enzyme G5 \* n =
    7. 1.05ul Enzyme G6 \* n =
-7. Vortex the Adaptase Master mix, spin down, and place back on ice
-8. Place 15ul sample aliquots in the thermocycler, and program a denature program:
+7. Vortex (gently, or flick mix) the Adaptase Master mix, spin down, and place back on ice
+8. Place 15ul sample aliquots in the thermocycler, and begin the following program to denature the DNA strands:
    1. 2 min at 95 C
    2. Note: lid set to 105C
 9. Immediately after the 2 minutes place the sample tubes back on ice for at least 2 minutes (samples must be cooled before adding adaptase enzymes)
@@ -126,7 +126,7 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
    2. Reagent W2 E
    3. Buffer W3 E
    4. Enzyme W4 E
-3. Vortex to mix and spin down all reagents a-d above and place back on ice
+3. Vortex (gently, or flick mix) to mix and spin down all reagents (1-4 above) and place back on ice
 4. Keep Low EDTA TE buffer on ice as well
 5. Prepare the Extension Master Mix in a 1.5mL tube on ice. Each component already includes 5% extra to account for error during pipetting. Add components in order to the tube:
    1. 19.325ul Low EDTA TE \* n =
@@ -135,25 +135,25 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
    4. 18.375ul Buffer W3 E \* n =
 6. Keep Extension Master mix on ice without reagent W4 until the samples are out of thermocycler adaptase program
 7. Once samples are done in the thermocycler, take them out and place them on ice
-8. Start the thermocycler start the following thermocycler program so it can pre-heat:
+8. Start the following thermocycler program so it can pre-heat:
    1. Hold at 98C
    2. 30 seconds 98C
    3. 15 seconds 63C
    4. 5 minutes 68C
    5. Hold at 4C
    6. Note: lid set to 105C
-9. Add enzyme W4 E to the Extension Master Mix:
+9. Now, add enzyme W4 E to the Extension Master Mix:
    1. 2.1 \* n =
-10. Vortex and spin down the Extension Master Mix and keep on ice
+10. Vortex (gently, or flick mix) and spin down the Extension Master Mix and keep on ice
 11. Add 47ul of Extension Master Mix to each sample and pipette mix 10X and spin down tubes
 12. Place sample tubes in thermocycler and press "skip step" to continue the extension program
 
 ## Post-Extension Cleanup
 
 1. **Note this bead clean uses different ratios than the xGen low input DNA kit standard protocol to account for DNA fragments below 200bp**
-2. Warm SPRI beads to room temperature in a drawer/away from light and swirl them gently to resuspend the beads
-3. Prepare fresh 80% ethanol each day you do library prep (10mL molecular grade water and 40mL 100% ethanol) and store at room temperature
-4. Take samples out of the thermocycler and place them at room temp on the workbench, the volume inside each tube should be 87ul
+2. Warm SPRI beads to room temperature in a drawer (i.e., away from light) and swirl them gently to resuspend the beads
+3. Prepare fresh 80% ethanol each day you do library prep (e.g., 10mL molecular grade water and 40mL 100% ethanol) and store at room temperature
+4. Take samples out of the thermocycler and place them at room temp on the workbench (the volume inside each tube should be 87ul at this point)
    1. Leave the lid of the thermocycler open to cool it in preparation for the ligation program
 5. Add 156ul of SPRI beads to each sample (1.8X) and pipette mix at least 10X (this maxes out the tube volume so this will be hard to do, you must pipette slowly and carefully)
 6. Place samples on an orbital mixer shaking at 300rpm for 10 minutes, or if no mixer is available leave at room temperature on the bench for 10 minutes
@@ -170,8 +170,8 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
 17. Close the lids of individual samples at this time to avoid over-drying beads if needed
 18. Resuspend each bead pellet off magnet with 21ul of room temperature Low EDTA TE buffer
     1. This may be difficult because of the large amount of beads, pipette up and down many times
-    2. You will see beads sticking to the outside of the pipette tip and to the sides of the tube, do your best to get much of the beads in solution but some just won't
-    3. Spin down and gently flick tubes with lids closed if this helps
+    2. You will see beads sticking to the outside of the pipette tip and to the sides of the tube, do your best to get as much of the beads in solution as possible, but some will be lost, which is okay.
+    3. Optionally - Spin down and gently flick tubes with lids closed to help resuspend bead clumps
 19. Place resuspended samples on the orbital mixer at 300rpm for 5 minutes, if no mixer is available leave at room temperature on the bench for 5 minutes
 20. Place samples back on the magnet and wait for the solution to become clear
 21. Slowly pipette up 20ul of the clear-ish supernatant and add it back into the tube to help make sure all the beads in solution get to the magnet. Make sure you don't pipette the bead pellet during this
@@ -197,7 +197,7 @@ For sequencing on patterned flow cells (any of these machines: NovaSeq 6000, Nov
    4. Note: lid heating **set to OFF**
 7. Add Enzyme B3 to the Ligation Master Mix on ice:
    1. 2.1ul \* n =
-8. Pipette mix the master mix with 50% volume 10X (for example for 100ul of mix use 50ul to pipette mix) or invert until no swirling is visible and then spin master mix down (invert works well if doing 24+ samples)
+8. Pipette mix the master mix with 50% volume 10X (for example for 100ul of mix use 50ul to pipette mix) or invert until no swirling is visible and then spin master mix down (simply inverting the tube works well if doing 24+ samples, but is not effective with small volumes of master mix)
 9. Add 20ul of Ligation Master Mix to each sample tube from the post-extension cleanup and pipette mix 10X
 10. Spin down sample tubes
 11. Place samples in the thermocycler and press "skip step" to advance the ligation program
