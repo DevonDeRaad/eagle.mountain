@@ -1,3 +1,6 @@
 ## This directory holds all code necessary to go from raw sequence data to processed vcf files used in downstream analyses
 
-details
+This directory contains the code needed to execute this bioinformatic pipeline:
+![pipeline](https://github.com/DevonDeRaad/eagle.mountain/blob/main/investigate.refgenome.mapping/methods.outline.png)
+
+In each of the four subdirectories, there are shell scripts that will start batch jobs (one job per sample) to take each sample through the pipeline. They are designed to run in ~24 hour chunks, and toepads and tissues are handled separately (as shown in the diagram) by referring to the files 'toepad.basenames.txt' and 'tissue.basenames.txt', respectively. At times, jobs did not finish in 24 hrs (wall-clock on the UCLA Hoffman2 cluster) and in this case, part of the script would be commented out or prevented from running using the command 'echo' and then the script would be re-run with the remaining steps allowed to go. In each subdirectory the protocol was: 1) start the batch job for the script with the suffix 'run.snpcalling.sh', 2) start the batch job for the script with the suffix 'run.toepad.snpcalling.sh', 3) Once both of those have successfully run for all samples, run the script called 'run.vcf.merge.sh', to merge all individual sample vcfs into a single population vcf and perform filtering.
