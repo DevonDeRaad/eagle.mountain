@@ -8,6 +8,9 @@ Details can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/ma
 ### Processing DNA sequence data
 Details can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/process.data
 
+### Investigate the results from the four different pipeline variants
+Details can be viewed here: https://devonderaad.github.io/eagle.mountain/prelim.mapping.investigation.html
+
 ## Figure 1
 
 ### Creating a sampling map
