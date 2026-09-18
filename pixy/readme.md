@@ -1,1 +1,2 @@
+# Analyzing genome-wide genetic diversity using Pixy
 This directory contains all the code necessary for running Pixy, and the output file showing genome-wide heterozygosity in 1Mb sliding windows for each sample (files ending with the extension '_pi.txt'). The batch job submitted to run this analysis is 'run.pixy.sh' and a full tutorial style walkthrough with code and visualizations can be viewed at: https://devonderaad.github.io/eagle.mountain/pixy/run.Pixy.html
