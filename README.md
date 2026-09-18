@@ -36,7 +36,7 @@ All code and resulting visualizations can be found here: https://github.com/Devo
 ## Figure 3
 
 ### Calculating genetic diversity using Pixy
-All code and resulting visualizations can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/Pixy
+All code and resulting visualizations can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/pixy
 
 ### Calculating runs of homozygosity (ROH) using BCFtools
 All code and resulting visualizations can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/ROH
