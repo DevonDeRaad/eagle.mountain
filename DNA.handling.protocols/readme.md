@@ -1,4 +1,4 @@
-This directory contains the protocols used to extract DNA from degraded museum specimens and prepare DNA libraries for sequencing.
+### This directory contains the protocols used to extract DNA from degraded museum specimens and prepare DNA libraries for sequencing
 
 - The file xxx contains the entire protocol for extracting degraded DNA from the toepads of historical museum specimens
   
