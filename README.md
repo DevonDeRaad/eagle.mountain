@@ -5,7 +5,7 @@ corresponding author: devonderaad@gmail.com
 ### Molecular sample processing
 Details can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/DNA.handling.protocols
 
-### Processing DNA sequence data
+### Bio-informatic processing of DNA sequence data
 Details can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/process.data
 
 ### Investigate the results from the four different pipeline variants
