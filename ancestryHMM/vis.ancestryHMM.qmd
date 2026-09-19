@@ -1,0 +1,275 @@
+---
+title: "visualize ancestryHMM results"
+format:
+  html:
+    code-fold: show
+    code-tools: true
+toc: true
+toc-title: Document Contents
+number-sections: true
+embed-resources: true
+---
+
+### Load in libraries and data
+```{r}
+library(ggplot2)
+library(zoo)
+library(dplyr)
+
+#Get a list of all the output files (.posterior file extension)
+posterior.files<-Sys.glob("~/Desktop/2026.eagle.mountain/ancestryHMM/*.posterior")
+```
+
+### read in ancestry likelihoods at each SNP and convert to discrete ancestry chunks
+```{r}
+#make an empty dataframe that can be filled with ancestry info:
+ancestry<-data.frame(sample=character(),homo.major=numeric(),prop.het=numeric(),homo.minor=numeric())
+
+#make a list to hold each chunk dataframe
+chunk.frames<-list()
+
+#using a for loop, plot ancestry across Chr 1, do ancestry painting across all chroms...
+#and calculate ancestry proportion across the genome, for each sample
+for (i in 1:length(posterior.files)){
+  
+  ### Read in ancestry from the given sample
+  df <- read.table(posterior.files[i], header=TRUE)
+  
+  #if woodhouseii is the major parent (original founder in the ancestryHMM code you ran), swap every 0 and 2 ancestry, to keep things consistent across samples
+  #for my analyses this was true in samples 7-10
+  if(i > 6 ){
+    wood.anc<-df$X2.0
+    cali.anc<-df$X0.2
+    df$X2.0<-cali.anc
+    df$X0.2<-wood.anc
+  }
+
+  # Assign most likely ancestry state per site
+  # 0 = homozygous founding pop, 2 = heterozygous, 3 = homozygous introgressed parent
+  #df$ancestry <- apply(df[,3:5], 1, which.max)
+  #add in a logical test to exclude sites where no single ancestry class is above 95% probability
+  df <- df[df[,3] > 0.95 | df[,4] > 0.95 | df[,5] > 0.95,]
+  df$ancestry <- apply(X = df[,3:5], MARGIN = 1, FUN = which.max)-1
+  
+  #plot ancestry on the first chromosome
+  print(ggplot(df[df$chrom=="NC_091013.1",], aes(x = position/1000000)) +
+    geom_line(aes(y = ancestry), linewidth = .5) +
+    labs(x = "Position on Chrom1 (Mbp)", y = "number of alleles derived from A. woodhouseii") +
+    ylim(c(0,2)) +
+    ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+    theme_bw()+
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_rect(colour = "black", fill = NA, linewidth = 1))
+   )
+  
+  #add in the end coordinate for each chunk
+  paint <- df %>%
+    arrange(chrom, position) %>%
+    group_by(chrom) %>%
+    mutate(end = lead(position)) %>%
+    filter(!is.na(end))
+  
+  #paint chromosomes
+  print(ggplot(paint, aes(x = position, xend = end, y = chrom, yend = chrom, color = factor(ancestry))) +
+    geom_segment(linewidth = 5) +
+    scale_color_manual(values = c("0" = "#ed2726", "1" = "purple", "2" = "#3567b1")) +
+    ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+    theme_classic())
+  
+  #calculate proportion of the genome called in each ancestry category
+  #total base-pairs of called ancestry:
+  dist<-c()
+  for (j in 1:nrow(paint)){
+    dist[j]<-paint$end[j]-paint$position[j]
+  }
+  #add info to df
+  paint$dist<-dist
+  #print total length of ancestry chunks called
+  sum(paint$dist)
+  
+  #record ancestry info for this sample:
+  #add sample name:
+  ancestry[i,1]<-gsub(".posterior","",gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i]))
+  #calculate proportion homozygous major ancestry
+  ancestry[i,2]<-sum(paint$dist[paint$ancestry==0])/sum(paint$dist) 
+  #calculate proportion het ancestry
+  ancestry[i,3]<-sum(paint$dist[paint$ancestry==1])/sum(paint$dist) 
+  #calculate proportion homozygous minor parent ancestry
+  ancestry[i,4]<-sum(paint$dist[paint$ancestry == 2])/sum(paint$dist)
+
+### calculate ancestry chunk sizes:
+#add chunk column
+paint$chunk <- with(paint,ave(ancestry, chrom, FUN=function(x) cumsum(c(1, diff(x)!=0))))
+
+#merge chunks while respecting chromosome boundaries
+chunks <- do.call(rbind, lapply(split(paint, interaction(paint$chrom, paint$chunk, drop=TRUE)), function(x)
+  data.frame(chrom=x$chrom[1], ancestry=x$ancestry[1], start=min(x$position), end=max(x$end), n_windows=nrow(x)))
+  )
+
+#calculate the length of each chunk:
+for (k in 1:nrow(chunks)){
+  chunks$dist[k]<-chunks$end[k]-chunks$start[k]
+}
+
+#hist of chunk sizes
+print(hist(chunks$dist, breaks = 1000, main = ancestry[i,1]))
+
+#calculate the proportion of the genome that was introgressed in a given time window:
+#>32 generations ago
+print((sum(chunks$dist[chunks$ancestry == 2 & chunks$dist <580000])+
+  (2*sum(chunks$dist[chunks$ancestry == 3 & chunks$dist <580000])))/(2*sum(chunks$dist)))
+#<=2 generations ago
+print((sum(chunks$dist[chunks$ancestry == 2 & chunks$dist >18520000])+
+    (2*sum(chunks$dist[chunks$ancestry == 3 & chunks$dist <18520000])))/(2*sum(chunks$dist)))
+
+
+#paint chromosomes based on merged chunks
+print(ggplot(chunks, aes(x = start, xend = end, y = chrom, yend = chrom, color = factor(ancestry))) +
+        geom_segment(linewidth = 3.5) +
+        scale_color_manual(values = c("0" = "#ed2726", "1" = "purple", "2" = "#3567b1")) +
+        ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+        scale_y_discrete(labels = c("NC_091013.1" = "1",
+                                    "NC_091014.1" = "1A",
+                                    "NC_091015.1" = "2",
+                                    "NC_091016.1" = "3",
+                                    "NC_091017.1" = "4",
+                                    "NC_091018.1" = "4A",
+                                    "NC_091019.1" = "5",
+                                    "NC_091020.1" = "6",
+                                    "NC_091021.1" = "7",
+                                    "NC_091022.1" = "8",
+                                    "NC_091023.1" = "9",
+                                    "NC_091024.1" = "10",
+                                    "NC_091025.1" = "11",
+                                    "NC_091026.1" = "12",
+                                    "NC_091027.1" = "13",
+                                    "NC_091028.1" = "14",
+                                    "NC_091029.1" = "15",
+                                    "NC_091030.1" = "17",
+                                    "NC_091031.1" = "18",
+                                    "NC_091032.1" = "19",
+                                    "NC_091033.1" = "20",
+                                    "NC_091034.1" = "21",
+                                    "NC_091035.1" = "22",
+                                    "NC_091036.1" = "23",
+                                    "NC_091037.1" = "24",
+                                    "NC_091038.1" = "25",
+                                    "NC_091039.1" = "26",
+                                    "NC_091040.1" = "27",
+                                    "NC_091041.1" = "28",
+                                    "NC_091042.1" = "29",
+                                    "NC_091043.1" = "30",
+                                    "NC_091044.1" = "31",
+                                    "NC_091045.1" = "34",
+                                    "NC_138417.1" = "W",
+                                    "NC_138418.1" = "Z")) +
+        theme_classic())
+
+#save plot
+plotsave<-ggplot(chunks, aes(x = start, xend = end, y = chrom, yend = chrom, color = factor(ancestry))) +
+        geom_segment(linewidth = 2.5) +
+        scale_color_manual(values = c("0" = "#ed2726", "1" = "purple", "2" = "#3567b1")) +
+        ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+        scale_y_discrete(labels = c("NC_091013.1" = "1",
+                                    "NC_091014.1" = "1A",
+                                    "NC_091015.1" = "2",
+                                    "NC_091016.1" = "3",
+                                    "NC_091017.1" = "4",
+                                    "NC_091018.1" = "4A",
+                                    "NC_091019.1" = "5",
+                                    "NC_091020.1" = "6",
+                                    "NC_091021.1" = "7",
+                                    "NC_091022.1" = "8",
+                                    "NC_091023.1" = "9",
+                                    "NC_091024.1" = "10",
+                                    "NC_091025.1" = "11",
+                                    "NC_091026.1" = "12",
+                                    "NC_091027.1" = "13",
+                                    "NC_091028.1" = "14",
+                                    "NC_091029.1" = "15",
+                                    "NC_091030.1" = "17",
+                                    "NC_091031.1" = "18",
+                                    "NC_091032.1" = "19",
+                                    "NC_091033.1" = "20",
+                                    "NC_091034.1" = "21",
+                                    "NC_091035.1" = "22",
+                                    "NC_091036.1" = "23",
+                                    "NC_091037.1" = "24",
+                                    "NC_091038.1" = "25",
+                                    "NC_091039.1" = "26",
+                                    "NC_091040.1" = "27",
+                                    "NC_091041.1" = "28",
+                                    "NC_091042.1" = "29",
+                                    "NC_091043.1" = "30",
+                                    "NC_091044.1" = "31",
+                                    "NC_091045.1" = "34",
+                                    "NC_138417.1" = "W",
+                                    "NC_138418.1" = "Z")) +
+        theme_classic()
+
+#save
+#ggsave(filename = paste0(gsub(".posterior","",posterior.files[i]),".pdf"), plot = plotsave, width = 8.5, height = 4.5)
+
+#compute the age of each ancestry chunk in the genome
+ages<-c()
+for (k in 1:nrow(chunks)){
+  ages[k]<-(50/(3.57*chunks$dist[k]))*1000000
+}
+chunks$ages<-ages
+#store the dataframe
+chunk.frames[[i]]<-chunks
+}
+
+```
+
+### Plot distribution of chunk ages in each of the hybrid samps
+```{r}
+#loop to plot
+for (i in c(4:6)){
+  #isolate individual
+  chunks<-chunk.frames[[i]]
+  #remove tiny chunks < 5 bp
+  print(table(chunks$dist > 5))
+  chunks<-chunks[chunks$dist > 5,]
+  #isolate het ancestry
+  hetchunks<-chunks[chunks$ancestry == 1,]
+  #duplicate chunks that are homozygous for introgressed ancestry
+  homochunks<-chunks[chunks$ancestry == 2,]
+  chunkplot<-rbind(hetchunks,homochunks,homochunks)
+  #hist(chunkplot$ages, breaks = 50)
+  #tesplot
+  hist(log10(chunkplot$ages), breaks = 20)
+  
+  # Plot histogram with a log10 x-axis
+  print(ggplot(chunkplot, aes(x = ages)) +
+    geom_histogram(bins=20, position = "dodge", color="black",fill="grey") +
+    scale_x_log10() +  # Converts the x-axis to log10 scale
+    labs(x = "Generations since introgression", y = "Number of introgressed ancestry chunks") +
+    ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+    geom_vline(xintercept=median(chunkplot$ages), linetype = "dashed", linewidth = 1) +
+    theme_classic())
+  
+  #report median
+  print(median(chunkplot$ages))
+  
+  # save plot
+#  plotsave<-ggplot(chunkplot, aes(x = ages)) +
+#    geom_histogram(bins=20, position = "dodge", color="black",fill="grey") +
+#    scale_x_log10() +  # Converts the x-axis to log10 scale
+#    labs(x = "Generations since introgression", y = "Number of introgressed ancestry chunks") +
+#    ggtitle(gsub("/Users/devonderaad/Desktop/2026.eagle.mountain/ancestryHMM/","",posterior.files[i])) +
+#    geom_vline(xintercept=median(chunkplot$ages), linetype = "dashed", linewidth = 1) +
+#    theme_classic()
+#  ggsave(filename = paste0(gsub(".posterior","",posterior.files[i]),"chunkages.pdf"), plot = plotsave, width = 4, height = 3)
+}
+```
+
+### Save chunk info for these three hybrid samples
+```{r}
+#loop to save
+for (i in c(4:6)){
+  #isolate individual
+  chunks<-chunk.frames[[i]]
+  #write.csv(chunks, quote = F, row.names = F, file = paste0(gsub(".posterior","",posterior.files[i]),"chunks.csv"))
+}
+```
+
