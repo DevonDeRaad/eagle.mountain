@@ -31,7 +31,7 @@ All code and resulting visualizations can be found here: https://github.com/Devo
 ## Figure 2
 
 ### Performing Local Ancestry Inference (LAI) using AncestryHMM
-All code and resulting visualizations can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/ancestry.HMM
+All code and resulting visualizations can be found here: https://github.com/DevonDeRaad/eagle.mountain/tree/main/ancestryHMM
 
 ## Figure 3
 
