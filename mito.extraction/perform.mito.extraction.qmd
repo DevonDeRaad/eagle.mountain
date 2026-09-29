@@ -18,7 +18,8 @@ knitr::include_graphics("~/Desktop/2026.eagle.mountain/eagle.mountain/mito.extra
 ```
 
 
-### Once I felt good about calling genotypes from this scaffold, I submitted this batch job on the UCLA cluster to isolate the mitochondrial scaffold from each bam file, genotype it with ploidy 0, and generate a consensus fasta sequence from each sample for the entire mitogenome
+### MtDNA genotype calling
+Once I felt good about calling genotypes from this scaffold, I submitted this batch job on the UCLA cluster to isolate the mitochondrial scaffold from each bam file, genotype it with ploidy 0, and generate a consensus fasta sequence from each sample for the entire mitogenome. This script also generates visualizations (histograms) showing depth at each site across the genome and minor allele frequency (MAF) at each site in the genome. The depth plot will show you whether you have any mtDNA coverage, and the MAF plot can reveal contamination (there should be no heterozygosity, i.e., MAF > 0, in the haploid mtDNA scaffold) if genomes from multiple organisms have been accidentally sequenced.
 ```{bash, eval=FALSE}
 #### submit_job.sh START ####
 #!/bin/bash
@@ -28,7 +29,7 @@ knitr::include_graphics("~/Desktop/2026.eagle.mountain/eagle.mountain/mito.extra
 #$ -l h_rt=24:00:00,h_data=5G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
 #$ -pe shared 1             #specify number of CPUs requested
 #  Job array indexes (1-200: by 1)
-#$ -t 1-13:1
+#$ -t 1-24:1
 
 #load modules
 . /u/local/Modules/default/init/modules.sh
@@ -43,7 +44,7 @@ module load samtools #(Version: 1.15)
 refgenome=/u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/FLSJ.fna
 
 # isolate base name for this replicate
-sample=$( head -n${SGE_TASK_ID} /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/tissue.basenames.txt | tail -n1 )
+sample=$( head -n${SGE_TASK_ID} /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/all.basenames.txt | tail -n1 )
 
 #isolate mtDNA scaffold
 samtools view -b bam_files/${sample}_final_filtered.bam NC_051467.1 > mito.bams/${sample}_mito.bam
@@ -51,73 +52,125 @@ samtools view -b bam_files/${sample}_final_filtered.bam NC_051467.1 > mito.bams/
 samtools index mito.bams/${sample}_mito.bam
 
 ###run bcftools to genotype
-bcftools mpileup -a FORMAT/DP,FORMAT/AD -Ou -f ${refgenome} mito.bams/${sample}_mito.bam | \
+#####set max number of reads to consider at a site at 10K by setting '-d 10000'
+bcftools mpileup -a FORMAT/DP,FORMAT/AD -d 10000 -Ou -f ${refgenome} mito.bams/${sample}_mito.bam | \
 bcftools call -m --ploidy 1 --output-type z -o mito.bams/${sample}.mito.vcf.gz
 
 #tabix index
 /u/project/aguillon/shared_bin/tabix-0.2.6/tabix mito.bams/${sample}.mito.vcf.gz
 
 #convert vcf to consensus fasta (mt.scaff.fna is the mitochondrial scaffold only, which I manually pulled out and put in its own .fna file)
-bcftools consensus -f mt.scaff.fna mito.bams/${sample}.mito.vcf.gz > mito.bams/${sample}.mito.fa
+### the options '--missing N' and '--absent N' are necessary to ensure that
+### the reference base is only called as consensus when it's actually supported, otherwise missing sites will get filled in with reference sequence
+bcftools consensus --missing N --absent N -f mt.scaff.fna mito.bams/${sample}.mito.vcf.gz > mito.bams/${sample}.mito.fa
 
 #rename fasta header to match the sample name
 sed -i "1s/.*/>${sample}/" mito.bams/${sample}.mito.fa
 
 #after every sample has run, use the following code to concatenate the alignment:
 #cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
-```
 
-### I repeated this procedure for all of the toepad samples
-```{bash, eval=FALSE}
-#### submit_job.sh START ####
-#!/bin/bash
-#$ -cwd
-#$ -o ./joblog.$JOB_ID.$TASK_ID.txt          #set the job log output file
-#$ -j y                   #set error = Merged with joblog
-#$ -l h_rt=24:00:00,h_data=5G   #specify requested resources (h_rt gives time request in 'hrs:mins:secs' format) (h_data specifies requested RAM per task) (highp=TRUE means run it on Aguillon Lab owned nodes)
-#$ -pe shared 1             #specify number of CPUs requested
-#  Job array indexes (1-200: by 1)
-#$ -t 1-11:1
+###
+### visualize depth and minor allele frequency across the genome to determine
+### A) do you have reads mapping to the mtDNA scaffold
+### and B) do you have excessive heterozygosity at mtDNA sites, which could suggest contamination
+###
 
-#load modules
-. /u/local/Modules/default/init/modules.sh
-#load programs
-module load bcftools #(version: 1.11)
-module load samtools #(Version: 1.15)
+#calculate depth per site across mitogenome
+#use the DP slot from the FORMAT column (not the INFO column), so that only high-quality reads considered in genotyping, are considered here
+bcftools query -f '[%DP]\n' mito.bams/${sample}.mito.vcf.gz  > mito.bams/${sample}_dp4_sums.txt
 
-#make folder to hold output
-#mkdir mito.bams
+#extract the allele depth for this sample (AD field)
+#depth of the major allele (should be 100% reads supporting a single base call, since mtDNA is haploid)
+bcftools query -f '[%AD]\n' mito.bams/${sample}.mito.vcf.gz  > mito.bams/${sample}_major_allele_unprocessed.txt
 
-# define the reference genome
-refgenome=/u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/FLSJ.fna
+#use awk to process the AD field to handle the fact that non-reference genotypes have two entries, and extract the more supported allele in these cases
+#Run awk, using a comma (,) as the field separator.
+awk -F',' '{
+    #NF = number of fields on the current line. If there is only one value on the line:
+    if (NF == 1)
+        #Print that single value.
+        print $1
+    #Otherwise, there are two (or more) values.
+    else
+        #if value 1 > value 2 → print value 1 : otherwise  → print value 2
+        print ($1 > $2 ? $1 : $2)
+}' mito.bams/${sample}_major_allele_unprocessed.txt > mito.bams/${sample}_major_allele.txt
+#last line reads input text and writes it to output file
 
-# isolate base name for this replicate
-sample=$( head -n${SGE_TASK_ID} /u/home/d/dderaad/project-aguillon/eagle.mountain.scrubjays/toepad.basenames.txt | tail -n1 )
+#divide major allele count by total depth to compute major allele frequency (while ignoring 0 depth sites, which will throw an error)
+paste mito.bams/${sample}_major_allele.txt mito.bams/${sample}_dp4_sums.txt | awk '$2 != 0 {print $1/$2}' > mito.bams/${sample}_AF.txt
 
-#isolate mtDNA scaffold
-samtools view -b bam_files/${sample}_final_filtered.bam NC_051467.1 > mito.bams/${sample}_mito.bam
-#index resulting bam file
-samtools index mito.bams/${sample}_mito.bam
+#subtract from 1 to get the inverse (i.e., convert from major allele frequency to minor allele frequency)
+#referring to this as VAF here, which I think is more accurate.
+#I think MAF implies minor allele frequency at a population scale
+#Meanwhile, VAF implies variant allele frequency within a single sample/individual
+awk '{print 1-$1}' mito.bams/${sample}_AF.txt > mito.bams/${sample}_VAF.txt
 
-###run bcftools to genotype
-bcftools mpileup -a FORMAT/DP,FORMAT/AD -Ou -f ${refgenome} mito.bams/${sample}_mito.bam | \
-bcftools call -m --ploidy 1 --output-type z -o mito.bams/${sample}.mito.vcf.gz
-
-#tabix index
-/u/project/aguillon/shared_bin/tabix-0.2.6/tabix mito.bams/${sample}.mito.vcf.gz
-
-#convert vcf to consensus fasta (mt.scaff.fna is the mitochondrial scaffold only, which I manually pulled out and put in its own .fna file)
-bcftools consensus -f mt.scaff.fna mito.bams/${sample}.mito.vcf.gz > mito.bams/${sample}.mito.fa
-
-#rename fasta header to match the sample name
-sed -i "1s/.*/>${sample}/" mito.bams/${sample}.mito.fa
-
-#after every sample has run, use the following code to concatenate the alignment:
-#cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
+#remove intermediate files but leave the relevant files needed to assess coverage and contamination
+#rm mito.bams/${sample}_dp4_sums.txt
+#rm mito.bams/${sample}_VAF.txt
+rm mito.bams/${sample}_AF.txt
+rm mito.bams/${sample}_major_allele.txt
+rm mito.bams/${sample}_major_allele_unprocessed.txt
 ```
 
 Then, as it says in the script, after all samples were complete, I used the following code to concatenate the alignment:
 cat mito.bams/*.mito.fa > mito.bams/mito.alignment.fa
+
+### Now, visualize mtDNA depth as a histogram for each sample, to make sure that we can confidently call mtDNA genotypes
+```{r}
+#Get a list of all the output files (.posterior file extension)
+dp4_files<-Sys.glob("~/Desktop/mito.bams/*_dp4_sums.txt")
+
+#open a dataframe to hold all data together
+dp4<-list()
+
+#in a loop, read in each dataframe, rename according to that sample, and combine
+for (i in 1:length(dp4_files)){
+  #read in the given vector
+  dp4[[i]]<-scan(dp4_files[i])
+  #rename the given slot in the list
+  names(dp4)[i] <- gsub("_dp4_sums.txt","",gsub("/Users/devonderaad/Desktop/mito.bams/","",dp4_files[i]))
+}
+
+#in a loop, make a histogram showing depth per sample
+for (i in 1:length(dp4_files)){
+  #make hist
+  hist(dp4[[i]], breaks=50, xlab = "mtDNA depth", ylab = "# of sites",
+       main = paste0(names(dp4)[i],", mean depth = ", round(mean(dp4[[i]]), 1)))
+  #add mean line
+  abline(v = mean(dp4[[i]]), col="red")
+}
+```
+
+Very noticeable that we got an order of magnitude (e.g., ~4,000x vs. 400x)  more mtDNA reads out of frozen tissues compared with dried toepads.
+
+### Now plot a histogram of VAF for each sample, to check for evidence of contamination
+```{r}
+#Get a list of all the output files (.posterior file extension)
+VAF_files<-Sys.glob("~/Desktop/mito.bams/*_VAF.txt")
+
+#open a dataframe to hold all data together
+VAF<-list()
+
+#in a loop, read in each dataframe, rename according to that sample, and combine
+for (i in 1:length(VAF_files)){
+  #read in the given vector
+  VAF[[i]]<-scan(VAF_files[i])
+  #rename the given slot in the list
+  names(VAF)[i] <- gsub("_VAF.txt","",gsub("/Users/devonderaad/Desktop/mito.bams/","",VAF_files[i]))
+}
+
+#in a loop, make a histogram showing depth per sample
+for (i in 1:length(VAF_files)){
+  #make hist
+  hist(VAF[[i]], breaks=50, xlab = "mtDNA VAF", ylab = "# of sites",
+       main = paste0(names(VAF)[i], ", mean VAF = ", round(mean(VAF[[i]]), 4)))
+  #add mean line
+  abline(v = mean(VAF[[i]]), col="red")
+}
+```
 
 ### Finally, load in your alignment and create the haplotype network
 ```{r}
@@ -127,7 +180,7 @@ library(pegas)
 library(DECIPHER)
 
 #Read the unaligned FASTA file, in Biostrings format
-dna_set<- readDNAStringSet("~/Desktop/2026.eagle.mountain/mito.bams/mito.alignment.fa")
+dna_set<- readDNAStringSet("~/Desktop/mito.bams/mito.alignment.fa")
 #Perform the multiple sequence alignment
 aligned_set<- AlignSeqs(dna_set)
 #Convert directly to ape's DNAbin format
@@ -155,7 +208,7 @@ plot(net,
 )
 
 #I then saved the above plot as a pdf and went and manually fixed all the font sizes to make them readable, which resulted in this plot, which will go in the suppmat:
-knitr::include_graphics("~/Desktop/2026.eagle.mountain/eagle.mountain/mito.extraction/fixed.haplotype.network.pdf")
+knitr::include_graphics("~/Desktop/mito.bams/mtDNA.hapnetwork.png")
 ```
 
 
